@@ -1,7 +1,7 @@
 import hashlib, json, math, struct, tempfile, unittest
 from pathlib import Path
 from server import Catalog, atomic_json
-from wheel_repair import LABELS, read_package, repair, validate_regions, remove_small_islands
+from wheel_repair import LABELS, read_package, repair, validate_regions
 
 def regions():
     return [dict(name=name,x=-.9 if name.endswith('L') else .9,y=.4,
@@ -52,16 +52,6 @@ class WheelRepairTests(unittest.TestCase):
                     region=next(r for r in regions() if r['name']==part['name'])
                     self.assertLessEqual(abs(v[0]-region['x']),region['width']/2+1e-6)
                     self.assertLessEqual(math.hypot(v[1]-region['y'],v[2]-region['z']),region['radius']+1e-6)
-    def test_cleanup_removes_tiny_island_not_main_surface(self):
-        parts=read_package(self.source)[2]
-        tiny=dict(name='Body',material=0,vertices=[(3,0,0,0,1,0,0,0),(3.01,0,0,0,1,0,0,0),(3,0,.01,0,1,0,0,0)],indices=[0,1,2])
-        cleaned,count=remove_small_islands(parts+[tiny])
-        self.assertEqual(count,1);self.assertEqual(cleaned[0]['indices'],parts[0]['indices']);self.assertEqual(cleaned[-1]['indices'],[])
-    def test_centered_pivots_preserve_geometry(self):
-        a=self.root/'a.wbcar';b=self.root/'b.wbcar'
-        repair(self.source,a,regions());report=repair(self.source,b,regions(),center_pivots=True)
-        self.assertTrue(report['wheelCenterPivots'])
-        self.assertAlmostEqual(area(read_package(a)[2]),area(read_package(b)[2]),places=4)
     def test_invalid_regions_rejected(self):
         for key,value in [('radius',float('nan')),('width',-1),('x',.9),('y',float('inf'))]:
             values=regions();values[0][key]=value

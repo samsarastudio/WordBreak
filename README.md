@@ -107,8 +107,10 @@ To verify the running container:
 sudo docker exec wordbreak-cars blender --background --factory-startup --disable-autoexec --python-exit-code 1 --python-expr "import numpy; print('BLENDER_NUMPY_OK', numpy.__version__)"
 ```
 
-## Loose fragments, wheel wobble, and deletion
+## Prepared wheels and car deletion
 
-In **Set up / repair tires**, optional **Remove tiny loose fragments** removes very small disconnected mesh components before cutting. This can also remove decorative details: inspect the staged preview before applying. **Center axles on cut wheel geometry** moves each wheel pivot to the bounds center of its cut geometry without moving the mesh. It helps offset-pivot wobble but does not reshape an oval tire or compensate for body geometry accidentally included in the wheel region. Adjust the cylinders to include only tire and rim, then test spinning and steering. The original model remains available through Restore.
+New uploads require separate mesh objects named exactly `WheelFL`, `WheelFR`, `WheelRL`, and `WheelRR`. Set their object origins at the axle centers, with the axle along the car's left/right axis. Left/right refer to the driver's seat. Keep bumper, suspension and axle-stub geometry in the body. The importer preserves these prepared wheel pivots and does not automatically reclassify body fragments when the four explicit wheel objects exist. Legacy offline gallery conversion still supports older models.
 
-Uploaded cars have **Delete car permanently**, with a confirmation. Publish another default first if necessary. Deletion immediately updates the catalog and removes known current, original-repair, and staged assets that are not shared with another car, built-in preview, or repair job. Previously downloaded client caches are not remotely erased. Built-in cars can be disabled rather than deleted. The authenticated `POST /admin/cars/delete` endpoint requires `id` and the current `revision`; deletion is blocked while an import or repair runs.
+The experimental tiny-fragment cleanup and automatic pivot-centering options have been removed. Prepare the source model instead. A tire with an oval mesh still needs modeling work; pivot changes alone cannot make it round.
+
+Uploaded cars retain **Delete car permanently**, with a confirmation. Publish another default first if necessary. Deletion updates the catalog and removes known current, original-repair, and staged assets that are not shared with another car, built-in preview, or repair job. Previously downloaded client caches are not remotely erased. Built-in cars can be disabled rather than deleted. The authenticated `POST /admin/cars/delete` endpoint requires `id` and the current `revision`; deletion is blocked while an import or repair runs.

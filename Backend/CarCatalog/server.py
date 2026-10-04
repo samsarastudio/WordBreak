@@ -155,8 +155,6 @@ class Catalog:
 
     def wheel_preview(self, body):
         regions=validate_regions(body.get('regions'))
-        clean_fragments=body.get('cleanFragments',False);center_pivots=body.get('centerPivots',False)
-        if type(clean_fragments) is not bool or type(center_pivots) is not bool:raise ValueError('Invalid repair options')
         neutral_inner=body.get('neutralInner',False)
         if type(neutral_inner) is not bool:raise ValueError('neutralInner must be boolean')
         with self.lock:
@@ -171,10 +169,10 @@ class Catalog:
             source=json.loads(json.dumps(source))
             job=secrets.token_hex(12)
             self.jobs[job]=dict(id=job,kind='wheel-repair',state='queued',carId=car['id'],sourceSha=car['sha256'])
-            self.pool.submit(self.cut_wheels,job,source,regions,neutral_inner,clean_fragments,center_pivots)
+            self.pool.submit(self.cut_wheels,job,source,regions,neutral_inner)
             return self.jobs[job].copy()
 
-    def cut_wheels(self,job,source,regions,neutral_inner=False,clean_fragments=False,center_pivots=False):
+    def cut_wheels(self,job,source,regions,neutral_inner=False):
         try:
             with self.lock:self.jobs[job]['state']='converting'
             with tempfile.TemporaryDirectory(prefix='wheel-repair-',dir=self.root) as directory:
@@ -182,8 +180,6 @@ class Catalog:
                 config.write_text(json.dumps(regions))
                 command=[sys.executable,str(HERE/'wheel_repair.py'),str(self.root/'packages'/(source['sha256']+'.wbcar')),str(package),str(config),str(report)]
                 if neutral_inner:command.append('--neutral-inner')
-                if clean_fragments:command.append('--clean-fragments')
-                if center_pivots:command.append('--center-pivots')
                 result=subprocess.run(command,capture_output=True,text=True,timeout=180,encoding='utf-8',errors='replace')
                 if result.returncode:raise ValueError('Wheel cut failed: '+result.stderr.strip()[-500:])
                 details=json.loads(report.read_text())
@@ -239,7 +235,7 @@ class Catalog:
                 work=Path(directory); model=extract_model(path,work/'source')
                 package=work/'model.wbcar'; report=work/'report.json'
                 result=subprocess.run([self.blender,'--background','--factory-startup','--disable-autoexec',
-                    '--python',str(HERE/'convert.py'),'--',str(model),str(package),str(report),str(yaw)],
+                    '--python',str(HERE/'convert.py'),'--',str(model),str(package),str(report),str(yaw),'--require-wheels'],
                     capture_output=True,text=True,timeout=180,encoding='utf-8',errors='replace')
                 (self.root/'last-conversion.log').write_text(result.stdout+'\n'+result.stderr,encoding='utf-8')
                 if result.returncode or not package.exists():raise ValueError('Model conversion failed. See last-conversion.log on the server.')

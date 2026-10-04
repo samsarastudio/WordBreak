@@ -3,7 +3,9 @@ import bpy, sys, math, struct, json, io
 from pathlib import Path
 from mathutils import Vector, Matrix
 
-source,output,report,yaw=sys.argv[sys.argv.index('--')+1:]
+arguments=sys.argv[sys.argv.index('--')+1:]
+source,output,report,yaw=arguments[:4]
+require_wheels='--require-wheels' in arguments[4:]
 source=Path(source);output=Path(output)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 if source.suffix.lower()=='.fbx':bpy.ops.import_scene.fbx(filepath=str(source),use_anim=False)
@@ -12,6 +14,10 @@ else:raise ValueError('Unsupported model format')
 bpy.context.view_layer.update()
 objects=[o for o in bpy.context.scene.objects if o.type=='MESH']
 if not objects:raise ValueError('Model contains no meshes')
+wheel_names={'WheelFL','WheelFR','WheelRL','WheelRR'}
+explicit_wheels={o.name:o for o in objects if o.name in wheel_names}
+explicit_mode=set(explicit_wheels)==wheel_names
+if require_wheels and not explicit_mode:raise ValueError('Prepare four separate wheel mesh objects named WheelFL, WheelFR, WheelRL, WheelRR, with origins at their axle centers before uploading.')
 rotation=Matrix.Rotation(math.radians(int(yaw)),4,'Z')
 vertices=[rotation@o.matrix_world@v.co for o in objects for v in o.data.vertices]
 if len(vertices)>300000:raise ValueError('Model exceeds 300,000 source vertices; simplify before uploading')
@@ -72,6 +78,7 @@ for obj in objects:
   candidate=(abs(center.x)>width*.26 and abs(center.y)>.42 and high.z<height*.57 and size.x<width*.42
     and size.z>.15 and .55<size.y/max(.001,size.z)<1.65)
   label=('Wheel'+('F' if center.y<0 else 'R')+('L' if center.x<0 else 'R')) if (candidate or named) else 'Body'
+  if explicit_mode:label=obj.name if obj.name in wheel_names else 'Body'
   if label!='Body':wheel_found.add(label)
   for v in group:labels[v]=label
  batches={}
@@ -106,6 +113,8 @@ centers={}
 for wheel in wheel_found:
  verts=[v for p in parts if p['label']==wheel for v in p['vertices']]
  centers[wheel]=tuple((min(v[i] for v in verts)+max(v[i] for v in verts))/2 for i in range(3))
+if explicit_mode:
+ for name,obj in explicit_wheels.items():centers[name]=tuple(unity((rotation@obj.matrix_world.translation-offset)*scale))
 if len(wheel_found)!=4:warnings.append('Not all four wheels could be separated automatically; remaining wheel geometry stays fixed. Export separate wheel objects for animation.')
 with output.open('wb') as f:
  def integer(n):f.write(struct.pack('<i',n))
