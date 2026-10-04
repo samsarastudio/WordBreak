@@ -1,4 +1,5 @@
 import io, json, tempfile, unittest, zipfile
+from unittest.mock import patch
 from pathlib import Path
 from server import Catalog, extract_model
 
@@ -6,6 +7,19 @@ class CatalogTests(unittest.TestCase):
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.catalog=Catalog(self.root/'data','missing-blender')
  def tearDown(self):self.catalog.pool.shutdown();self.temp.cleanup()
+ def test_preview_cache_skips_blender(self):
+  digest='a'*64;folder=self.catalog.root/'previews'/digest;folder.mkdir(parents=True)
+  for view in ('hero','front','rear','left','right'):(folder/(view+'.jpg')).write_bytes(b'image')
+  with patch('server.subprocess.run') as run:
+   self.assertTrue(self.catalog.render_previews(Path('unused'),digest));run.assert_not_called()
+ def test_preview_failure_keeps_import_available(self):
+  with patch('server.subprocess.run',side_effect=OSError('renderer unavailable')):
+   self.assertFalse(self.catalog.render_previews(Path('unused'),'b'*64))
+  self.assertIn('renderer unavailable',(self.catalog.root/'last-preview.log').read_text())
+ def test_partial_preview_set_is_not_success(self):
+  with patch('server.subprocess.run') as run:
+   run.return_value.returncode=0;run.return_value.stdout='';run.return_value.stderr=''
+   self.assertFalse(self.catalog.render_previews(Path('unused'),'c'*64))
  def test_defaults_and_persistence(self):
   c=self.catalog.snapshot();self.assertEqual(len(c['cars']),6)
   c=self.catalog.edit(dict(revision=c['revision'],defaultCarId='kenney-sedan'))

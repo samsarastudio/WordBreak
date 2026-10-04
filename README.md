@@ -58,6 +58,18 @@ Admin routes require `Authorization: Bearer <token>`:
 
 Catalog writes use revision checks to reject stale changes. The browser UI is the reference client. `Backend/CarCatalog/upload.py` also supports command-line imports; omit `--publish` and `--default` to stage a car for review.
 
+## Automatic previews on a Raspberry Pi
+
+Each new ZIP is converted and automatically rendered into a thumbnail plus front, rear, left, and right JPEGs. Wheel repairs use the same renderer. The default `CAR_PREVIEW_QUALITY=lite` profile uses CPU rendering at 480 x 300, 512-pixel preview textures, two render threads, limited light bounces, and no denoiser. This reduces render working memory; Blender and model import still have their own memory requirements. The actual peak depends on the uploaded model and has not been measured on a Pi.
+
+One import/repair runs at a time. Complete galleries are reused by model hash. Images persist under `/data/previews` in Docker; keep the `/data` volume when updating the container. Render failures are recorded in `/data/last-preview.log` and do not prevent interactive 3D preview or model import. Interactive 3D rendering runs in the administrator's browser.
+
+Set `CAR_PREVIEW_QUALITY=studio` in the server/container environment to use the original 720 x 450 denoised profile for newly rendered galleries. Existing cached images are retained.
+
+The six seeded built-in entries are names/IDs only. They need their model packages and `builtin-previews.json` copied separately; the source-only repository does not contain those assets. ZIP uploads carry their own model and generate previews automatically.
+
+Update the server code and rebuild/recreate your container using the same persistent data volume to enable the lightweight default. No game build update is required.
+
 ## Tests
 
 ```sh

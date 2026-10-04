@@ -79,6 +79,21 @@ class Catalog:
             result[car['id']]=dict(package=f'/packages/{digest}.wbcar',images=images,triangles=metadata.get('triangles'),wheelCount=metadata.get('wheelCount'),width=metadata.get('width'),height=metadata.get('height'),length=metadata.get('length'))
         return result
 
+    def render_previews(self, package, digest):
+        """Render once per immutable model; both upload and wheel repair share this path."""
+        destination=self.root/'previews'/digest
+        complete=lambda: all((destination/(view+'.jpg')).is_file() for view in ('hero','front','rear','left','right'))
+        if complete():return True
+        try:
+            result=subprocess.run([self.blender,'--background','--factory-startup','--disable-autoexec','--threads','2','--python-exit-code','1',
+                '--python',str(HERE/'render_preview.py'),'--',str(package),str(destination)],
+                capture_output=True,text=True,timeout=240,encoding='utf-8',errors='replace')
+            (self.root/'last-preview.log').write_text(result.stdout+'\n'+result.stderr,encoding='utf-8')
+            return result.returncode==0 and complete()
+        except (subprocess.TimeoutExpired,OSError) as error:
+            (self.root/'last-preview.log').write_text(str(error),encoding='utf-8')
+            return False
+
     def edit(self, body):
         with self.lock:
             current = self.snapshot()
@@ -140,10 +155,7 @@ class Catalog:
                 details['warnings']=[w for w in source.get('warnings',[]) if not w.startswith('Not all four wheels')]+details['warnings']
                 digest=hashlib.sha256(package.read_bytes()).hexdigest()
                 target=self.root/'packages'/(digest+'.wbcar');os.replace(package,target)
-                try:
-                    rendered=subprocess.run([self.blender,'--background','--factory-startup','--disable-autoexec','--python',str(HERE/'render_preview.py'),'--',str(target),str(self.root/'previews'/digest)],capture_output=True,text=True,timeout=240,encoding='utf-8',errors='replace')
-                    if rendered.returncode:details['warnings'].append('Studio images unavailable; interactive preview is still available.')
-                except (subprocess.TimeoutExpired,OSError):details['warnings'].append('Studio images unavailable; interactive preview is still available.')
+                if not self.render_previews(target,digest):details['warnings'].append('Studio images unavailable; interactive preview is still available.')
                 asset=dict(sha256=digest,package='/packages/'+target.name,bytes=target.stat().st_size,**details)
                 with self.lock:self.jobs[job].update(state='ready',asset=asset,original=source,message='Preview ready. Test wheel movement before applying.')
         except Exception as error:
@@ -199,12 +211,7 @@ class Catalog:
                 digest=hashlib.sha256(package.read_bytes()).hexdigest();filename=digest+'.wbcar'
                 os.replace(package,self.root/'packages'/filename)
                 details=json.loads(report.read_text())
-                try:
-                    preview_result=subprocess.run([self.blender,'--background','--factory-startup','--disable-autoexec','--python',str(HERE/'render_preview.py'),'--',str(self.root/'packages'/filename),str(self.root/'previews'/digest)],capture_output=True,text=True,timeout=240,encoding='utf-8',errors='replace')
-                    preview_ok=preview_result.returncode==0 and all((self.root/'previews'/digest/(view+'.jpg')).is_file() for view in ('hero','front','rear','left','right'))
-                except subprocess.TimeoutExpired:
-                    preview_ok=False
-                if not preview_ok:details.setdefault('warnings',[]).append('Studio images unavailable; interactive preview is still available.')
+                if not self.render_previews(self.root/'packages'/filename,digest):details.setdefault('warnings',[]).append('Studio images unavailable; interactive preview is still available.')
                 with self.lock:
                     current=self.snapshot();old=next((x for x in current['cars'] if x['id']==car_id),None)
                     entry=dict(id=car_id,name=name,builtin='',enabled=old['enabled'] if old else False,
