@@ -958,6 +958,10 @@ void RegisterAllStrippedInternalCalls()
 
 	//Start Registrations for type : UnityEngine.AudioSource
 
+		//System.Single UnityEngine.AudioSource::GetPitch_Injected(System.IntPtr)
+		void Register_UnityEngine_AudioSource_GetPitch_Injected();
+		Register_UnityEngine_AudioSource_GetPitch_Injected();
+
 		//System.Void UnityEngine.AudioSource::PlayHelper_Injected(System.IntPtr,System.UInt64)
 		void Register_UnityEngine_AudioSource_PlayHelper_Injected();
 		Register_UnityEngine_AudioSource_PlayHelper_Injected();
@@ -4109,6 +4113,10 @@ void RegisterAllStrippedInternalCalls()
 	//End Registrations for type : UnityEngine.ParticleSystemRenderer
 
 	//Start Registrations for type : UnityEngine.Physics
+
+		//System.Boolean UnityEngine.Physics::CheckBox_Internal_Injected(UnityEngine.PhysicsScene&,UnityEngine.Vector3&,UnityEngine.Vector3&,UnityEngine.Quaternion&,System.Int32,UnityEngine.QueryTriggerInteraction)
+		void Register_UnityEngine_Physics_CheckBox_Internal_Injected();
+		Register_UnityEngine_Physics_CheckBox_Internal_Injected();
 
 		//System.Boolean UnityEngine.Physics::Query_ComputePenetration_Injected(System.IntPtr,UnityEngine.Vector3&,UnityEngine.Quaternion&,System.IntPtr,UnityEngine.Vector3&,UnityEngine.Quaternion&,UnityEngine.Vector3&,System.Single&)
 		void Register_UnityEngine_Physics_Query_ComputePenetration_Injected();
@@ -7281,10 +7289,6 @@ void RegisterAllStrippedInternalCalls()
 		//System.IntPtr UnityEngine.Transform::GetRoot_Injected(System.IntPtr)
 		void Register_UnityEngine_Transform_GetRoot_Injected();
 		Register_UnityEngine_Transform_GetRoot_Injected();
-
-		//System.Void UnityEngine.Transform::Internal_LookAt_Injected(System.IntPtr,UnityEngine.Vector3&,UnityEngine.Vector3&)
-		void Register_UnityEngine_Transform_Internal_LookAt_Injected();
-		Register_UnityEngine_Transform_Internal_LookAt_Injected();
 
 		//System.Void UnityEngine.Transform::InverseTransformPoint_Injected(System.IntPtr,UnityEngine.Vector3&,UnityEngine.Vector3&)
 		void Register_UnityEngine_Transform_InverseTransformPoint_Injected();

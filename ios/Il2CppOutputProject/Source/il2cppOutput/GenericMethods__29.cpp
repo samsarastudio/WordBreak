@@ -1609,26 +1609,35 @@ struct DrivenRectTransformTracker_tFB0706C933E3C68E4F377C204FCEEF091F1EE0B1
 struct DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE 
 {
 	float ___steer;
+	float ___throttle;
 	bool ___drift;
 	bool ___boost;
 	bool ___accelerate;
 	bool ___brake;
+	bool ___reverse;
+	bool ___reset;
 };
 struct DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE_marshaled_pinvoke
 {
 	float ___steer;
+	float ___throttle;
 	int32_t ___drift;
 	int32_t ___boost;
 	int32_t ___accelerate;
 	int32_t ___brake;
+	int32_t ___reverse;
+	int32_t ___reset;
 };
 struct DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE_marshaled_com
 {
 	float ___steer;
+	float ___throttle;
 	int32_t ___drift;
 	int32_t ___boost;
 	int32_t ___accelerate;
 	int32_t ___brake;
+	int32_t ___reverse;
+	int32_t ___reset;
 };
 struct EditorInstanceDataArrays_t76B622E0CFFED0B4D6EF0AE1D07186179A4FE788 
 {

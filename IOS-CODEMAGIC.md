@@ -15,6 +15,8 @@ References: [Codemagic signing](https://docs.codemagic.io/yaml-code-signing/sign
 
 ## What this export contains
 
+The handling revision adds a two-axis touch joystick (up/down for forward/reverse, left/right for steering), separate accelerator/brake/reverse buttons, and RESET with a five-second recovery stop. The city countdown continues during recovery; reset rewinds to a clear approach instead of skipping ahead. Keyboard: W/Up gas, S/Down brake into reverse, A/D steering, B brake, Space drift, Shift boost, R reset. Analog throttle controls engine force, releasing throttle coasts, and reverse has a lower speed limit. The cinematic camera shares the car's smoothed render position and eases its orbit transitions. Driving remains an arcade path-based model with chassis collision sweeps.
+
 The current Unity game includes train launch ramps, jump slow motion and orbit camera, a 90-second escape deadline with city collapse, and a finish drift celebration. The HTTPS health and catalog endpoints returned 200, and the Unity player fetched the live catalog and drove its selected car successfully. The user returned a successful Codemagic Xcode archive; its compiled ARM64 app was repackaged and checked as an unsigned IPA. Personal-device signing and installation have not been tested here.
 
 The domain is the **car-catalog service**. Race multiplayer remains the separate UDP 7777 host/join system. Previously saved catalog addresses are retained by existing installations; change those in Settings > Car Downloads if needed.

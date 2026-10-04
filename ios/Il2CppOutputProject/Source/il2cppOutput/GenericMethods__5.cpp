@@ -1112,26 +1112,35 @@ struct DrawBufferRange_t289089F19A7539FDA77D3E63416BAFBA0955E2D5
 struct DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE 
 {
 	float ___steer;
+	float ___throttle;
 	bool ___drift;
 	bool ___boost;
 	bool ___accelerate;
 	bool ___brake;
+	bool ___reverse;
+	bool ___reset;
 };
 struct DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE_marshaled_pinvoke
 {
 	float ___steer;
+	float ___throttle;
 	int32_t ___drift;
 	int32_t ___boost;
 	int32_t ___accelerate;
 	int32_t ___brake;
+	int32_t ___reverse;
+	int32_t ___reset;
 };
 struct DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE_marshaled_com
 {
 	float ___steer;
+	float ___throttle;
 	int32_t ___drift;
 	int32_t ___boost;
 	int32_t ___accelerate;
 	int32_t ___brake;
+	int32_t ___reverse;
+	int32_t ___reset;
 };
 struct EntityId_t982FBD037EAC5CA077B1602A7EA40E3523AA0FC8 
 {
