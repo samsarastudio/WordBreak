@@ -1,0 +1,8 @@
+/ios/** -text
+/ios/**/*.a filter=lfs diff=lfs merge=lfs -text
+/ios/**/*.dll filter=lfs diff=lfs merge=lfs -text
+/ios/**/*.dylib filter=lfs diff=lfs merge=lfs -text
+/ios/**/*.dat filter=lfs diff=lfs merge=lfs -text
+/ios/**/*.resS filter=lfs diff=lfs merge=lfs -text
+/ios/**/*.resource filter=lfs diff=lfs merge=lfs -text
+/ios/**/data.unity3d filter=lfs diff=lfs merge=lfs -text

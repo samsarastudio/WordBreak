@@ -31,3 +31,14 @@ Thumbs.db
 
 # Temporary extraction of the deployment bundle.
 /builtin-previews/
+
+# Checked-in Unity iOS export: its engine data is required by Xcode.
+!/ios/
+!/ios/**
+/ios/**/xcuserdata/
+/ios/**/*.xcuserstate
+/build/
+*.p12
+*.p8
+*.mobileprovision
+/xcodebuild.log

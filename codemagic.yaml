@@ -1,0 +1,83 @@
+workflows:
+  ios-compile-check:
+    name: WORLD BREAK - iOS compile check (unsigned)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment:
+      xcode: latest
+    scripts:
+      - name: Load Unity export and verify server configuration
+        script: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull
+          python3 ci/prepare_ios.py
+      - name: Compile iPhone archive without signing
+        script: |
+          set -euo pipefail
+          xcodebuild -project ios/Unity-iPhone.xcodeproj -scheme Unity-iPhone \
+            -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath build/WorldBreakRush-unsigned.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive | tee xcodebuild.log
+      - name: Package unsigned archive for inspection
+        script: ditto -c -k --sequesterRsrc --keepParent build/WorldBreakRush-unsigned.xcarchive build/WorldBreakRush-unsigned.zip
+    artifacts:
+      - build/WorldBreakRush-unsigned.zip
+      - xcodebuild.log
+
+  ios-device-ipa:
+    name: WORLD BREAK - signed iPhone IPA (registered devices)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment:
+      xcode: latest
+      ios_signing:
+        distribution_type: ad_hoc
+        bundle_identifier: com.worldbreak.rush
+    scripts:
+      - name: Load Unity export and verify server configuration
+        script: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull
+          python3 ci/prepare_ios.py
+      - name: Apply uploaded signing profiles
+        script: xcode-project use-profiles
+      - name: Set build number
+        script: |
+          cd ios
+          agvtool new-version -all "$BUILD_NUMBER"
+      - name: Build signed IPA
+        script: xcode-project build-ipa --project ios/Unity-iPhone.xcodeproj --scheme Unity-iPhone
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - build/ios/xcarchive/*.xcarchive/dSYMs/*.dSYM
+
+  ios-app-store-ipa:
+    name: WORLD BREAK - App Store signed IPA (manual upload)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment:
+      xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.worldbreak.rush
+    scripts:
+      - name: Load Unity export and verify server configuration
+        script: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull
+          python3 ci/prepare_ios.py
+      - name: Apply uploaded signing profiles
+        script: xcode-project use-profiles
+      - name: Set build number
+        script: |
+          cd ios
+          agvtool new-version -all "$BUILD_NUMBER"
+      - name: Build signed IPA
+        script: xcode-project build-ipa --project ios/Unity-iPhone.xcodeproj --scheme Unity-iPhone
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
