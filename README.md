@@ -106,3 +106,9 @@ To verify the running container:
 ```sh
 sudo docker exec wordbreak-cars blender --background --factory-startup --disable-autoexec --python-exit-code 1 --python-expr "import numpy; print('BLENDER_NUMPY_OK', numpy.__version__)"
 ```
+
+## Loose fragments, wheel wobble, and deletion
+
+In **Set up / repair tires**, optional **Remove tiny loose fragments** removes very small disconnected mesh components before cutting. This can also remove decorative details: inspect the staged preview before applying. **Center axles on cut wheel geometry** moves each wheel pivot to the bounds center of its cut geometry without moving the mesh. It helps offset-pivot wobble but does not reshape an oval tire or compensate for body geometry accidentally included in the wheel region. Adjust the cylinders to include only tire and rim, then test spinning and steering. The original model remains available through Restore.
+
+Uploaded cars have **Delete car permanently**, with a confirmation. Publish another default first if necessary. Deletion immediately updates the catalog and removes known current, original-repair, and staged assets that are not shared with another car, built-in preview, or repair job. Previously downloaded client caches are not remotely erased. Built-in cars can be disabled rather than deleted. The authenticated `POST /admin/cars/delete` endpoint requires `id` and the current `revision`; deletion is blocked while an import or repair runs.

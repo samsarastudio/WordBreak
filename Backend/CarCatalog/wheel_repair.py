@@ -91,9 +91,39 @@ def split_polygon(poly, plane):
         a,da = b,db
     return inside, outside
 
-def repair(source, destination, regions, neutral_inner=False):
+def remove_small_islands(parts):
+    """Drop only tiny disconnected components, joining positions across UV seams."""
+    triangles=[]; links={}; parents=[]
+    def find(i):
+        while parents[i]!=i:
+            parents[i]=parents[parents[i]];i=parents[i]
+        return i
+    for pi,part in enumerate(parts):
+        for t in range(0,len(part['indices']),3):
+            ids=part['indices'][t:t+3]; index=len(triangles);parents.append(index)
+            triangles.append((pi,ids))
+            for vi in ids:
+                key=tuple(round(v,5) for v in part['vertices'][vi][:3])
+                if key in links:parents[find(index)]=find(links[key])
+                else:links[key]=index
+    groups={}
+    for i in range(len(triangles)):groups.setdefault(find(i),[]).append(i)
+    removed=set()
+    for group in groups.values():
+        if len(group)>max(4,len(triangles)*.005):continue
+        points=[parts[triangles[i][0]]['vertices'][v] for i in group for v in triangles[i][1]]
+        if max(max(v[a] for v in points)-min(v[a] for v in points) for a in range(3))<.18:
+            removed.update(group)
+    result=[dict(p,indices=[]) for p in parts]
+    for i,(pi,ids) in enumerate(triangles):
+        if i not in removed:result[pi]['indices'].extend(ids)
+    return result,len(removed)
+
+def repair(source, destination, regions, neutral_inner=False, clean_fragments=False, center_pivots=False):
     regions = validate_regions(regions)
     bounds, materials, parts = read_package(source)
+    removed=0
+    if clean_fragments:parts,removed=remove_small_islands(parts)
     neutral_material=None
     if neutral_inner:
         if len(materials)>=32:raise ValueError('No material slot available for neutral wheel faces')
@@ -150,6 +180,10 @@ def repair(source, destination, regions, neutral_inner=False):
     batches = {k:v for k,v in batches.items() if v['indices']}
     if len(batches) > 128: raise ValueError('Too many mesh parts after cutting')
     pivots = {r['name']:(r['x'],r['y'],r['z']) for r in regions}
+    if center_pivots:
+        for name in LABELS:
+            vertices=[v for (label,_),batch in batches.items() if label==name for v in batch['vertices']]
+            pivots[name]=tuple((min(v[a] for v in vertices)+max(v[a] for v in vertices))/2 for a in range(3))
     with Path(destination).open('wb') as f:
         def integer(n): f.write(struct.pack('<i',n))
         def floats(v): f.write(struct.pack('<'+'f'*len(v),*v))
@@ -163,11 +197,11 @@ def repair(source, destination, regions, neutral_inner=False):
             f.write(struct.pack('<'+'i'*len(batch['indices']),*batch['indices']))
     if Path(destination).stat().st_size > 64*1024*1024: raise ValueError('Repaired package exceeds 64 MB')
     return dict(triangles=total_i//3,wheelCount=4,width=bounds[0],height=bounds[1],length=bounds[2],
-                wheelRegions=regions,wheelNeutralInner=bool(neutral_inner),wheelTriangleCounts=counts,
+                wheelRegions=regions,wheelNeutralInner=bool(neutral_inner),wheelCleanFragments=bool(clean_fragments),wheelCenterPivots=bool(center_pivots),removedTriangles=removed,wheelTriangleCounts=counts,
                 warnings=['Manually cut wheels: inspect spinning and steering for body fragments or open seams. Cut surfaces are not rebuilt.'])
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(); parser.add_argument('source'); parser.add_argument('output'); parser.add_argument('regions'); parser.add_argument('report')
-    parser.add_argument('--neutral-inner',action='store_true');args=parser.parse_args()
-    try: Path(args.report).write_text(json.dumps(repair(args.source,args.output,json.loads(Path(args.regions).read_text()),args.neutral_inner)))
+    parser.add_argument('--neutral-inner',action='store_true');parser.add_argument('--clean-fragments',action='store_true');parser.add_argument('--center-pivots',action='store_true');args=parser.parse_args()
+    try: Path(args.report).write_text(json.dumps(repair(args.source,args.output,json.loads(Path(args.regions).read_text()),args.neutral_inner,args.clean_fragments,args.center_pivots)))
     except ValueError as error: raise SystemExit(str(error))

@@ -122,8 +122,41 @@ class Catalog:
             atomic_json(self.path,current); self.data=current
             return current
 
+    def delete_car(self,body):
+        with self.lock:
+            if body.get('revision')!=self.data['revision']:raise ValueError('Catalog changed; refresh and retry')
+            if any(j['state'] in ('queued','converting') for j in self.jobs.values()):raise ValueError('Wait for the current import or repair to finish')
+            car=next((c for c in self.data['cars'] if c['id']==body.get('id')),None)
+            if not car:raise ValueError('Unknown car')
+            if car.get('builtin'):raise ValueError('Built-in cars can be disabled, not deleted')
+            if car['id']==self.data['defaultCarId']:raise ValueError('Choose and publish another default car first')
+            current=self.snapshot();current['cars']=[c for c in current['cars'] if c['id']!=car['id']]
+            def hashes(value):
+                result=set()
+                if isinstance(value,dict):
+                    for key,v in value.items():
+                        if key=='sha256' and isinstance(v,str) and re.fullmatch('[0-9a-f]{64}',v):result.add(v)
+                        else:result.update(hashes(v))
+                elif isinstance(value,list):
+                    for v in value:result.update(hashes(v))
+                return result
+            candidates=hashes(car)
+            jobs={k:v for k,v in self.jobs.items() if v.get('carId')!=car['id']}
+            for job in self.jobs.values():
+                if job.get('carId')==car['id']:candidates.update(hashes(job))
+            registry=self.root/'builtin-previews.json'
+            protected=hashes(current)|hashes(list(jobs.values()))|hashes(json.loads(registry.read_text()) if registry.exists() else {})
+            current['revision']+=1;atomic_json(self.path,current);self.data=current;self.jobs=jobs
+            for digest in candidates-protected:
+                (self.root/'packages'/(digest+'.wbcar')).unlink(missing_ok=True)
+                folder=self.root/'previews'/digest
+                if folder.exists():shutil.rmtree(folder)
+            return current
+
     def wheel_preview(self, body):
         regions=validate_regions(body.get('regions'))
+        clean_fragments=body.get('cleanFragments',False);center_pivots=body.get('centerPivots',False)
+        if type(clean_fragments) is not bool or type(center_pivots) is not bool:raise ValueError('Invalid repair options')
         neutral_inner=body.get('neutralInner',False)
         if type(neutral_inner) is not bool:raise ValueError('neutralInner must be boolean')
         with self.lock:
@@ -138,10 +171,10 @@ class Catalog:
             source=json.loads(json.dumps(source))
             job=secrets.token_hex(12)
             self.jobs[job]=dict(id=job,kind='wheel-repair',state='queued',carId=car['id'],sourceSha=car['sha256'])
-            self.pool.submit(self.cut_wheels,job,source,regions,neutral_inner)
+            self.pool.submit(self.cut_wheels,job,source,regions,neutral_inner,clean_fragments,center_pivots)
             return self.jobs[job].copy()
 
-    def cut_wheels(self,job,source,regions,neutral_inner=False):
+    def cut_wheels(self,job,source,regions,neutral_inner=False,clean_fragments=False,center_pivots=False):
         try:
             with self.lock:self.jobs[job]['state']='converting'
             with tempfile.TemporaryDirectory(prefix='wheel-repair-',dir=self.root) as directory:
@@ -149,6 +182,8 @@ class Catalog:
                 config.write_text(json.dumps(regions))
                 command=[sys.executable,str(HERE/'wheel_repair.py'),str(self.root/'packages'/(source['sha256']+'.wbcar')),str(package),str(config),str(report)]
                 if neutral_inner:command.append('--neutral-inner')
+                if clean_fragments:command.append('--clean-fragments')
+                if center_pivots:command.append('--center-pivots')
                 result=subprocess.run(command,capture_output=True,text=True,timeout=180,encoding='utf-8',errors='replace')
                 if result.returncode:raise ValueError('Wheel cut failed: '+result.stderr.strip()[-500:])
                 details=json.loads(report.read_text())
@@ -180,6 +215,7 @@ class Catalog:
             car=next((c for c in current['cars'] if c['id']==body.get('id')),None)
             if not car or car.get('builtin') or not car.get('wheelRepairOriginal'):raise ValueError('No original wheel setup to restore')
             car.update(car.pop('wheelRepairOriginal'));car.pop('wheelRegions',None);car.pop('wheelTriangleCounts',None);car.pop('wheelNeutralInner',None)
+            for key in ('wheelCleanFragments','wheelCenterPivots','removedTriangles'):car.pop(key,None)
             current['revision']+=1;atomic_json(self.path,current);self.data=current
             return current
 
@@ -266,7 +302,7 @@ class Handler(BaseHTTPRequestHandler):
             length=int(self.headers.get('Content-Length','0'))
             if not 0<length<=MAX_UPLOAD:raise ValueError('Invalid upload size (maximum 100 MB)')
             parsed=urlsplit(self.path)
-            wheel_routes={'/admin/wheels/preview':self.catalog.wheel_preview,'/admin/wheels/apply':self.catalog.wheel_apply,'/admin/wheels/restore':self.catalog.wheel_restore}
+            wheel_routes={'/admin/cars/delete':self.catalog.delete_car,'/admin/wheels/preview':self.catalog.wheel_preview,'/admin/wheels/apply':self.catalog.wheel_apply,'/admin/wheels/restore':self.catalog.wheel_restore}
             if parsed.path in wheel_routes:
                 if length>65536:raise ValueError('Request too large')
                 body=json.loads(self.rfile.read(length))

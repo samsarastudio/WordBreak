@@ -20,6 +20,25 @@ class CatalogTests(unittest.TestCase):
   with patch('server.subprocess.run') as run:
    run.return_value.returncode=0;run.return_value.stdout='';run.return_value.stderr=''
    self.assertFalse(self.catalog.render_previews(Path('unused'),'c'*64))
+ def test_delete_removes_only_unshared_assets(self):
+  digest='d'*64;shared='e'*64
+  self.catalog.data['cars'].extend([dict(id='delete-me',sha256=digest,wheelRepairOriginal={'sha256':shared}),dict(id='keep',sha256=shared)])
+  for sha in (digest,shared):
+   (self.catalog.root/'packages'/(sha+'.wbcar')).write_bytes(b'package')
+   folder=self.catalog.root/'previews'/sha;folder.mkdir(parents=True);(folder/'hero.jpg').write_bytes(b'image')
+  self.catalog.delete_car(dict(id='delete-me',revision=1))
+  self.assertFalse((self.catalog.root/'packages'/(digest+'.wbcar')).exists())
+  self.assertFalse((self.catalog.root/'previews'/digest).exists())
+  self.assertTrue((self.catalog.root/'packages'/(shared+'.wbcar')).exists())
+  self.assertEqual(json.loads(self.catalog.path.read_text())['revision'],2)
+ def test_delete_guards(self):
+  with self.assertRaises(ValueError):self.catalog.delete_car(dict(id='cinder',revision=1))
+  self.catalog.data['cars'].append(dict(id='uploaded'))
+  with self.assertRaises(ValueError):self.catalog.delete_car(dict(id='uploaded',revision=0))
+  self.catalog.data['defaultCarId']='uploaded'
+  with self.assertRaises(ValueError):self.catalog.delete_car(dict(id='uploaded',revision=1))
+  self.catalog.data['defaultCarId']='cinder';self.catalog.jobs['busy']={'state':'converting'}
+  with self.assertRaises(ValueError):self.catalog.delete_car(dict(id='uploaded',revision=1))
  def test_defaults_and_persistence(self):
   c=self.catalog.snapshot();self.assertEqual(len(c['cars']),6)
   c=self.catalog.edit(dict(revision=c['revision'],defaultCarId='kenney-sedan'))

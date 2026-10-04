@@ -31,7 +31,7 @@ export function createWheelEditor({api,onApplied}){
  $('wheelBuild').onclick=async()=>{
   lock(true);job=null;$('wheelError').textContent='';$('wheelStatus').textContent='Cutting wheel regions and rendering a test preview…';
   try{
-   let task=await api('/admin/wheels/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:car.id,sha256:car.sha256,regions,neutralInner:$('wheelNeutral').checked})});
+   let task=await api('/admin/wheels/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:car.id,sha256:car.sha256,regions,neutralInner:$('wheelNeutral').checked,cleanFragments:$('wheelClean').checked,centerPivots:$('wheelCenter').checked})});
    const deadline=Date.now()+480000;
    while(['queued','converting'].includes(task.state)){
     if(Date.now()>deadline)throw Error('Preview timed out. Close this window and try again after the current job finishes.');
@@ -39,7 +39,7 @@ export function createWheelEditor({api,onApplied}){
    }
    if(task.state!=='ready')throw Error(task.message||'Preview failed');
    await viewer.load(task.asset.package);job=task;testMode(true);
-   $('wheelStatus').textContent='Test preview only — not applied. '+Object.entries(task.asset.wheelTriangleCounts).filter(([name])=>name!=='Body').map(([name,n])=>name.replace('Wheel','')+': '+n.toLocaleString()+' triangles').join(' · ');
+   $('wheelStatus').textContent='Test preview only — not applied. '+'Removed '+(task.asset.removedTriangles||0)+' fragment triangles. '+Object.entries(task.asset.wheelTriangleCounts).filter(([name])=>name!=='Body').map(([name,n])=>name.replace('Wheel','')+': '+n.toLocaleString()+' triangles').join(' · ');
   }catch(e){$('wheelError').textContent=e.message;$('wheelStatus').textContent='Your saved model has not changed.'}finally{lock(false)}
  };
  $('wheelApply').onclick=async()=>{
@@ -57,7 +57,7 @@ export function createWheelEditor({api,onApplied}){
  $('wheelClose').onclick=()=>{if(!busy)dialog.close()};dialog.addEventListener('cancel',e=>{if(busy)e.preventDefault()});dialog.addEventListener('close',()=>{viewer.enabled=false;viewer.clear()});
  window.addEventListener('beforeunload',e=>{if(busy){e.preventDefault();e.returnValue=''}});
  return {async open(selected,catalogRevision){
-  car=structuredClone(selected);$('wheelNeutral').checked=!!car.wheelNeutralInner;revision=catalogRevision;job=null;testing=false;$('wheelError').textContent='';$('wheelStatus').textContent='Loading wheel setup…';$('wheelSelect').value='0';
+  car=structuredClone(selected);$('wheelClean').checked=!!car.wheelCleanFragments;$('wheelCenter').checked=!!car.wheelCenterPivots;$('wheelNeutral').checked=!!car.wheelNeutralInner;revision=catalogRevision;job=null;testing=false;$('wheelError').textContent='';$('wheelStatus').textContent='Loading wheel setup…';$('wheelSelect').value='0';
   $('wheelApplyNote').textContent=car.enabled?'Applying replaces this available car for players on their next sync. The original model is kept for restore.':'Applying saves the repaired model. This car stays in review until you enable and publish it.';
   $('wheelRestore').hidden=!car.wheelRepairOriginal;dialog.showModal();viewer??=new CarViewer($('wheelViewer'));viewer.enabled=true;testMode(false);lock(true);
   try{await viewer.load(car.wheelRepairOriginal?.package||car.package);regions=structuredClone(car.wheelRegions||viewer.suggestedWheelRegions());fields();$('wheelStatus').textContent='Adjust each cylinder to enclose only its tire and rim. Your saved model is unchanged.'}
