@@ -94,3 +94,15 @@ Tests cover durable catalog changes, ZIP path validation, connected mesh cuts, U
 ## Third-party notice
 
 Three.js 0.180.0 is distributed under the MIT license. Its license is included at `Backend/CarCatalog/static/vendor/THREE-LICENSE.txt`.
+
+## FBX import reports missing NumPy
+
+The Docker image explicitly installs Debian `python3-numpy` for Debian Blender and verifies the import inside Blender during the image build. Installing NumPy with the image's default `pip` targets a different Python interpreter and may not fix Blender.
+
+If an older deployed container reports `ModuleNotFoundError: No module named 'numpy'`, pull the updated source, rebuild the image, and recreate the container with the existing `/data` volume. Retry the failed ZIP upload afterward. No game build changes are required.
+
+To verify the running container:
+
+```sh
+sudo docker exec wordbreak-cars blender --background --factory-startup --disable-autoexec --python-exit-code 1 --python-expr "import numpy; print('BLENDER_NUMPY_OK', numpy.__version__)"
+```

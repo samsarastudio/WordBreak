@@ -1,5 +1,8 @@
 FROM python:3.12-slim
-RUN apt-get update && apt-get install -y --no-install-recommends blender && rm -rf /var/lib/apt/lists/* && useradd -m catalog
+RUN apt-get update && apt-get install -y --no-install-recommends blender python3-numpy && rm -rf /var/lib/apt/lists/* && useradd -m catalog
+# Debian Blender uses the system Python, not the image's /usr/local Python.
+# Verify the FBX dependency inside Blender itself; fail the build if missing.
+RUN blender --background --factory-startup --disable-autoexec --python-exit-code 1 --python-expr "import numpy; print('BLENDER_NUMPY_OK', numpy.__version__)"
 WORKDIR /app
 COPY server.py convert.py render_preview.py wheel_repair.py admin.html ./
 COPY static ./static
