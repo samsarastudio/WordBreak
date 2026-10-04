@@ -1,6 +1,6 @@
 workflows:
   ios-compile-check:
-    name: WORLD BREAK - iOS compile check (unsigned)
+    name: WORLD BREAK - unsigned IPA for personal sideloading
     instance_type: mac_mini_m2
     max_build_duration: 90
     environment:
@@ -19,10 +19,10 @@ workflows:
             -configuration Release -destination 'generic/platform=iOS' \
             -archivePath build/WorldBreakRush-unsigned.xcarchive \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive | tee xcodebuild.log
-      - name: Package unsigned archive for inspection
-        script: ditto -c -k --sequesterRsrc --keepParent build/WorldBreakRush-unsigned.xcarchive build/WorldBreakRush-unsigned.zip
+      - name: Package unsigned IPA for local signing
+        script: python3 ci/package_unsigned_ipa.py build/WorldBreakRush-unsigned.xcarchive build/WorldBreakRush-unsigned.ipa
     artifacts:
-      - build/WorldBreakRush-unsigned.zip
+      - build/WorldBreakRush-unsigned.ipa
       - xcodebuild.log
 
   ios-device-ipa:
