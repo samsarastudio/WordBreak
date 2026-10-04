@@ -2,7 +2,7 @@
 
 Server and browser admin for WORLD//BREAK vehicle content. Upload a car ZIP, review its 3D model and studio images, repair wheel assignments, and publish catalog updates to compatible game clients without rebuilding the game.
 
-This repository contains **server source only**. It does not contain the Unity project, game binaries, imported models, generated previews, production catalog, or admin credentials.
+This repository contains the server source and a curated built-in preview deployment ZIP. It does not contain the Unity project, game binaries, original model sources, production catalog, or admin credentials.
 
 ## Run locally
 
@@ -28,7 +28,7 @@ Wheel repair cuts existing triangles, including connected meshes, while preservi
 
 Models are normalized to 4.2 metres long. Separate wheel objects named with `wheel`, `tire`, or `tyre` are the most reliable input. The importer also detects plausible disconnected wheel geometry. Limits include a 100 MB ZIP, 400 MB extracted content, 200,000 triangles, and a 64 MB converted package. Only base-color materials are imported; no downloaded executable game code is supported.
 
-The seeded catalog includes the game's built-in car IDs. Their assets remain in the game and are not distributed here. Built-in admin previews require externally supplied matching preview data; uploaded cars generate their previews automatically. The optional `prepare_gallery.py` backfill utility expects the original game's `ArtSource/Model7071/` and `ArtSource/KenneyCarKit/` directories at the repository root.
+The seeded catalog includes the game's built-in car IDs. Install the included deployment ZIP below to enable their admin previews; uploaded cars generate their previews automatically. The optional `prepare_gallery.py` backfill utility expects the original game's `ArtSource/Model7071/` and `ArtSource/KenneyCarKit/` directories at the repository root.
 
 ## Persistence and hosting
 
@@ -66,9 +66,22 @@ One import/repair runs at a time. Complete galleries are reused by model hash. I
 
 Set `CAR_PREVIEW_QUALITY=studio` in the server/container environment to use the original 720 x 450 denoised profile for newly rendered galleries. Existing cached images are retained.
 
-The six seeded built-in entries are names/IDs only. They need their model packages and `builtin-previews.json` copied separately; the source-only repository does not contain those assets. ZIP uploads carry their own model and generate previews automatically.
+The six seeded built-in entries are names/IDs only. They need their model packages and `builtin-previews.json` copied separately; the deployment ZIP described below supplies those assets. ZIP uploads carry their own model and generate previews automatically.
 
 Update the server code and rebuild/recreate your container using the same persistent data volume to enable the lightweight default. No game build update is required.
+
+## Install built-in previews
+
+The repository includes `deploy/WorldBreak-Builtin-Previews.zip` with six built-in model packages, their registry, and 30 gallery images. It contains no admin token or catalog settings. After pulling this repository on the Pi, run from the repository root (the container name below is `wordbreak-cars`):
+
+```sh
+git pull --ff-only
+unzip -o deploy/WorldBreak-Builtin-Previews.zip -d builtin-previews
+sudo docker cp builtin-previews/. wordbreak-cars:/data/
+sudo docker exec -u 0 wordbreak-cars chown -R catalog:catalog /data
+```
+
+Refresh `/admin`; no container rebuild or restart is needed for this asset copy. Keep `/data` on the existing persistent volume. For a direct Python installation, extract into its configured `--data` directory instead. New model ZIP uploads generate their own previews automatically.
 
 ## Tests
 

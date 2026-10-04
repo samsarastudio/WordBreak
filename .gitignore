@@ -25,3 +25,9 @@ Temp/
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Curated built-in preview bundle for server deployments.
+!/deploy/WorldBreak-Builtin-Previews.zip
+
+# Temporary extraction of the deployment bundle.
+/builtin-previews/
