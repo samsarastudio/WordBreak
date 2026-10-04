@@ -1,0 +1,71 @@
+# WordBreak — Car Catalog Server
+
+Server and browser admin for WORLD//BREAK vehicle content. Upload a car ZIP, review its 3D model and studio images, repair wheel assignments, and publish catalog updates to compatible game clients without rebuilding the game.
+
+This repository contains **server source only**. It does not contain the Unity project, game binaries, imported models, generated previews, production catalog, or admin credentials.
+
+## Run locally
+
+Requirements: Python 3.11+ and Blender installed. No third-party Python packages are needed. The browser's Three.js dependency is bundled locally.
+
+```powershell
+python Backend/CarCatalog/server.py --blender 'C:/Program Files/Blender Foundation/Blender 4.5/blender.exe'
+```
+
+Open <http://127.0.0.1:8787/admin>. The first start creates `Backend/CarCatalog/data/admin-token.txt`; paste that token into **Unlock editing**. Each installation generates its own token. Alternatively, supply `CAR_ADMIN_TOKEN` through the server environment.
+
+On Windows, `Manage-Cars.cmd` starts the service if necessary and opens the admin. Its helper supports `-Python` and `-Blender` executable paths. This convenience launcher listens on all interfaces for LAN testing; the Python command above defaults to loopback. Use `--host 0.0.0.0` explicitly when running the Python entry point for LAN access.
+
+## Import and publish a car
+
+1. Choose **Add car** and upload a ZIP containing exactly one FBX or GLB plus its base-color textures. Scripts inside ZIPs are ignored.
+2. Review the interactive 3D preview, five studio angles, triangle count, and warnings. New cars start disabled/in review.
+3. Use **Test wheel spin** and the steering slider to check the wheel assignments. A 4/4 count alone does not guarantee correct geometry.
+4. If needed, open **Set up / repair tires**, position the four wheel cylinders, and build a test preview. Inspect all four wheels in motion before applying. **Neutral inner wheel faces** can cover unwanted paint on inward-facing tire surfaces. The original setup is kept for restore.
+5. Enable the car and choose **Publish changes**. You can also manage names, ordering, default selection, and overrides of saved player choices.
+
+Wheel repair cuts existing triangles, including connected meshes, while preserving UVs. It does not reconstruct missing wheels, close cut surfaces, or repair arbitrary melted geometry. Poor source meshes may still need Blender cleanup. Applying a repair or replacing the ZIP of an already available car updates that car for clients on their next sync; preview generation alone does not publish it.
+
+Models are normalized to 4.2 metres long. Separate wheel objects named with `wheel`, `tire`, or `tyre` are the most reliable input. The importer also detects plausible disconnected wheel geometry. Limits include a 100 MB ZIP, 400 MB extracted content, 200,000 triangles, and a 64 MB converted package. Only base-color materials are imported; no downloaded executable game code is supported.
+
+The seeded catalog includes the game's built-in car IDs. Their assets remain in the game and are not distributed here. Built-in admin previews require externally supplied matching preview data; uploaded cars generate their previews automatically. The optional `prepare_gallery.py` backfill utility expects the original game's `ArtSource/Model7071/` and `ArtSource/KenneyCarKit/` directories at the repository root.
+
+## Persistence and hosting
+
+The default data directory is `Backend/CarCatalog/data/`; override it with `--data`. Persist and back up this whole directory, including the catalog, token, immutable packages, studio previews, and optional built-in preview registry. Applied wheel repairs and their original packages survive server restarts. Pending import/preview job records are in memory and must be regenerated after a restart.
+
+```sh
+docker build -t wordbreak-cars Backend/CarCatalog
+docker run -d --restart unless-stopped --name wordbreak-cars \
+  -p 127.0.0.1:8787:8787 -v wordbreak-cars:/data \
+  --memory 2g --cpus 2 wordbreak-cars
+```
+
+For internet use, put the service behind an HTTPS reverse proxy and restrict admin access. Allow uploads up to 100 MB. Conversion and image rendering are background jobs, polled by the admin. Keep Blender updated. The Docker image runs as a non-root user; its build has not been verified on this Windows development machine.
+
+Game clients need the existing runtime catalog support installed. This repository does not implement the race/multiplayer server or cross-device player accounts. Compatible clients fetch the catalog and immutable WBCAR001 mesh packages; the game supplies driving physics, input, collision, and wheel animation. Existing older game builds without that loader need a one-time client update.
+
+## API
+
+Public reads: `GET /health`, `GET /v1/catalog`, `GET /v1/previews`, and package/preview URLs returned by these endpoints.
+
+Admin routes require `Authorization: Bearer <token>`:
+
+- `GET /admin/session` and `GET /admin/jobs/<job-id>`
+- `POST /admin/upload?id=<id>&name=<name>&yaw=0` with a ZIP body
+- `POST /admin/catalog` with catalog changes and the current revision
+- `POST /admin/wheels/preview`, `/admin/wheels/apply`, and `/admin/wheels/restore`
+
+Catalog writes use revision checks to reject stale changes. The browser UI is the reference client. `Backend/CarCatalog/upload.py` also supports command-line imports; omit `--publish` and `--default` to stage a car for review.
+
+## Tests
+
+```sh
+python -m unittest discover -s Backend/CarCatalog -p "test*.py"
+```
+
+Tests cover durable catalog changes, ZIP path validation, connected mesh cuts, UV preservation, wheel-region validation, staged previews, stale updates, and restoring original models. Browser and real-model checks were also performed in the game workspace; no Unity files or test-player binaries are included here.
+
+## Third-party notice
+
+Three.js 0.180.0 is distributed under the MIT license. Its license is included at `Backend/CarCatalog/static/vendor/THREE-LICENSE.txt`.

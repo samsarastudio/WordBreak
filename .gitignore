@@ -1,0 +1,27 @@
+# Local runtime state and credentials
+**/data/
+**/test-data/
+**/__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+admin-token.txt
+Logs/
+logs/
+.venv/
+venv/
+# Imported models and generated assets are deployment data, not source.
+*.zip
+*.fbx
+*.glb
+*.blend
+*.blend1
+*.wbcar
+ArtSource/
+Builds/
+Library/
+Temp/
+node_modules/
+.DS_Store
+Thumbs.db
