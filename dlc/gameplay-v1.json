@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "revision": 1,
+  "minAppVersion": "1.1.0",
+  "tuning": {
+    "acceleration": 24,
+    "braking": 32,
+    "rollingResistance": 0.6,
+    "aeroDrag": 0.0012,
+    "steeringResponse": 26,
+    "driftAngle": 46,
+    "boostRecharge": 0.085,
+    "resetSeconds": 5,
+    "jumpSlowMotion": true
+  },
+  "courses": [
+    {
+      "id": "aftershock-run",
+      "name": "AFTERSHOCK RUN",
+      "distance": 2200,
+      "width": 18,
+      "escapeSeconds": 85,
+      "seed": 9271,
+      "crystalDistance": 1100,
+      "crystalLane": 6,
+      "hazards": [
+        {"kind": 0, "distance": 300, "time": 4, "duration": 120, "lane": -1},
+        {"kind": 2, "distance": 600, "time": 8, "duration": 17, "lane": 0},
+        {"kind": 0, "distance": 1000, "time": 16, "duration": 120, "lane": 1},
+        {"kind": 3, "distance": 1450, "time": 25, "duration": 120, "lane": 0},
+        {"kind": 0, "distance": 1830, "time": 38, "duration": 120, "lane": -1}
+      ]
+    }
+  ]
+}

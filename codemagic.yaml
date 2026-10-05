@@ -21,6 +21,10 @@ workflows:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive | tee xcodebuild.log
       - name: Package unsigned IPA for local signing
         script: python3 ci/package_unsigned_ipa.py build/WorldBreakRush-unsigned.xcarchive build/WorldBreakRush-unsigned.ipa
+      - name: Publish new iOS version when release credentials are configured
+        script: |
+          VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' build/WorldBreakRush-unsigned.xcarchive/Products/Applications/*.app/Info.plist)
+          python3 ci/publish_update.py --platform ios --version "$VERSION" --file build/WorldBreakRush-unsigned.ipa
     artifacts:
       - build/WorldBreakRush-unsigned.ipa
       - xcodebuild.log
