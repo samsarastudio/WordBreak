@@ -1,4 +1,4 @@
-# WORLD BREAK RUSH — iOS 1.6.0 export
+# WORLD BREAK RUSH — iOS 1.6.1 export
 
 This `codex/ios-codemagic` branch contains the generated Unity Xcode client project. In Codemagic select **ios-compile-check** for the existing unsigned IPA workflow. See [IOS-CODEMAGIC.md](IOS-CODEMAGIC.md).
 

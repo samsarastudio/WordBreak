@@ -608,8 +608,11 @@ struct RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB  : public Ru
 {
 	List_1_t9FC4C0AF614E20E10E72DBEF9C9026AAF468CC4E* ___samples;
 	float ___renderTick;
+	float ___lastArrival;
+	float ___jitter;
+	int32_t ___arrivalTick;
 	bool ___ready;
-	int32_t ___DelayTicks;
+	int32_t ___U3CDelayTicksU3Ek__BackingField;
 };
 struct RaceStream_tDFDD10DCE1D20FEE3C0A6A24D170E16814422191  : public RuntimeObject
 {
@@ -2777,8 +2780,7 @@ inline CloudSnapshot_t224A74C1162E23C79DF867293BA5D5EC83D11B26* JsonUtility_From
 }
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool Single_IsFinite_m50EDEFA3EDE9C72BC485E44C13C1CEC483D3D412_inline (float ___0_f, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Exception__ctor_m9B2BD92CD68916245A75109105D9071C9D430E7F (Exception_t* __this, String_t* ___0_message, const RuntimeMethod* method) ;
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool RaceSnapshotBuffer_Add_m384E6956325EA21E861C78FF2CF3844996C96C14 (RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* __this, int32_t ___0_tick, RacerStateU5BU5D_t7F54C4FB81B40DE3E074844C3141AEC4228B568F* ___1_racers, const RuntimeMethod* method) ;
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t Mathf_CeilToInt_mF2BF9F4261B3431DC20E10A46CFEEED103C48963_inline (float ___0_f, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool RaceSnapshotBuffer_Add_m408D553C619F37312EF2C8C136DEC59563903513 (RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* __this, int32_t ___0_tick, RacerStateU5BU5D_t7F54C4FB81B40DE3E074844C3141AEC4228B568F* ___1_racers, float ___2_arrival, int32_t ___3_rate, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* VehicleCatalogClient_Find_m9E9DEBB117812A6174E9B29C0B1012AF3FC41D04 (VehicleCatalogClient_tF9068C663562E8062863731668AF5A3915C3CF79* __this, String_t* ___0_id, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* RushBootstrap_get_Car_m4A85196A239C57BC3049CAA83AC1A7970CACAFEF (RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RacePrediction__ctor_m8B92BD1EA903A13088C7C3C97BED4C266038E31A (RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* __this, RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* ___0_authority, int32_t ___1_slot, VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* ___2_car, const RuntimeMethod* method) ;
@@ -2788,9 +2790,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RacePrediction_Reconcile_m842D440F7F38C7
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float CloudRaceClient_get_WaitSeconds_mED135C7B80CE4BFF1BDC4184C2B823489F6774B6_inline (CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RushBootstrap_Show_mAC3DE21D48ADFD53FD7A5BEBE4F3F1C9EEA159EE (RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* __this, int32_t ___0_screen, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* RaceSnapshotBuffer_SampleAt_m1EDEC541F8DAA7BEFF29FE608D8E85C7D263A9FC (RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* __this, int32_t ___0_index, const RuntimeMethod* method) ;
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* RacePrediction_Remote_m82D278BE22305AB08E3084B1023D309C8CDA5C29 (RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* __this, int32_t ___0_index, const RuntimeMethod* method) ;
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float Mathf_InverseLerp_mBD7EC6A7173CE082226077E1557D5BC2D2AE0D9D_inline (float ___0_a, float ___1_b, float ___2_value, const RuntimeMethod* method) ;
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float Mathf_LerpAngle_m0653422E15193C2E4A4E5AF05236B6315C789C23_inline (float ___0_a, float ___1_b, float ___2_t, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RaceSnapshotBuffer_Advance_m82F01BBBDC10D5EA65F3B1038CF2B4CFC2910547 (RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* __this, float ___0_dt, int32_t ___1_rate, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float CloudRaceClient_get_StateAge_m82D79BC84A344B6FBB1C4B73146EBAF712955A8A (CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RaceSimulation_Tick_m5EEEFF31897E682B0A33821A97B13F47C42B64CA (RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* __this, float ___0_dt, DriverInputU5BU5D_tE319B4200DA432A889A5F76518E11F7F81D2C1BA* ___1_inputs, VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* ___2_car, int32_t ___3_upgrade, int32_t ___4_predictedIndex, const RuntimeMethod* method) ;
@@ -16117,20 +16116,20 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CloudRaceClient_Apply_m7ED0F8F16C402C2B5
 	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* G_B11_1 = NULL;
 	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* G_B10_0 = NULL;
 	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* G_B9_0 = NULL;
-	VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* G_B45_0 = NULL;
-	int32_t G_B45_1 = 0;
-	RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* G_B45_2 = NULL;
-	CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* G_B45_3 = NULL;
-	VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* G_B44_0 = NULL;
-	int32_t G_B44_1 = 0;
-	RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* G_B44_2 = NULL;
-	CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* G_B44_3 = NULL;
-	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B57_0 = NULL;
-	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B54_0 = NULL;
-	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B56_0 = NULL;
+	VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* G_B43_0 = NULL;
+	int32_t G_B43_1 = 0;
+	RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* G_B43_2 = NULL;
+	CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* G_B43_3 = NULL;
+	VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* G_B42_0 = NULL;
+	int32_t G_B42_1 = 0;
+	RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* G_B42_2 = NULL;
+	CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* G_B42_3 = NULL;
 	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B55_0 = NULL;
-	String_t* G_B58_0 = NULL;
-	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B58_1 = NULL;
+	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B52_0 = NULL;
+	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B54_0 = NULL;
+	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B53_0 = NULL;
+	String_t* G_B56_0 = NULL;
+	RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* G_B56_1 = NULL;
 	{
 		MatchReply_t612F3FB72E5AE7D638479ED41F59F3FF15F06FCD* L_0 = ___0_reply;
 		if (!L_0)
@@ -16334,7 +16333,7 @@ IL_010d:
 		float L_58 = L_57->___time;
 		if ((!(((float)L_58) < ((float)(0.0f)))))
 		{
-			goto IL_04ad;
+			goto IL_0479;
 		}
 	}
 	{
@@ -16343,7 +16342,7 @@ IL_010d:
 		float L_60 = L_59->___wait;
 		if ((!(((float)L_60) > ((float)(0.0f)))))
 		{
-			goto IL_04ad;
+			goto IL_0479;
 		}
 	}
 	{
@@ -16356,7 +16355,7 @@ IL_010d:
 		float L_64 = L_63->___wait;
 		NullCheck(L_62);
 		L_62->___time = ((-L_64));
-		goto IL_04ad;
+		goto IL_0479;
 	}
 
 IL_0161:
@@ -16367,7 +16366,7 @@ IL_0161:
 		int32_t L_67 = __this->___sequence;
 		if ((((int32_t)L_66) <= ((int32_t)L_67)))
 		{
-			goto IL_04ad;
+			goto IL_0479;
 		}
 	}
 	{
@@ -16378,7 +16377,7 @@ IL_0161:
 		L_70 = String_IsNullOrEmpty_mEA9E3FB005AC28FE02E69FCF95A7B8456192B478(L_69, NULL);
 		if (L_70)
 		{
-			goto IL_04ad;
+			goto IL_0479;
 		}
 	}
 	{
@@ -16668,268 +16667,246 @@ IL_02eb:
 		CloudSnapshot_t224A74C1162E23C79DF867293BA5D5EC83D11B26* L_158 = V_3;
 		NullCheck(L_158);
 		RacerStateU5BU5D_t7F54C4FB81B40DE3E074844C3141AEC4228B568F* L_159 = L_158->___racers;
-		NullCheck(L_155);
-		bool L_160;
-		L_160 = RaceSnapshotBuffer_Add_m384E6956325EA21E861C78FF2CF3844996C96C14(L_155, L_157, L_159, NULL);
-		float L_161 = __this->___lastArrival;
-		if ((!(((float)L_161) > ((float)(0.0f)))))
-		{
-			goto IL_0392;
-		}
-	}
-	{
-		RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* L_162 = __this->___buffer;
-		float L_163 = __this->___lastState;
-		float L_164 = __this->___lastArrival;
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_165 = __this->___game;
-		NullCheck(L_165);
-		GameConfig_t888251607D5201684F416A1C67592368B4EC0CEB* L_166 = L_165->___config;
-		NullCheck(L_166);
-		int32_t L_167 = L_166->___tickRate;
-		int32_t L_168;
-		L_168 = Mathf_CeilToInt_mF2BF9F4261B3431DC20E10A46CFEEED103C48963_inline(((float)il2cpp_codegen_multiply(((float)il2cpp_codegen_multiply(((float)il2cpp_codegen_subtract(L_163, L_164)), ((float)L_167))), (2.0f))), NULL);
-		int32_t L_169;
-		L_169 = Mathf_Clamp_m4DC36EEFDBE5F07C16249DA568023C5ECCFF0E7B_inline(L_168, 3, ((int32_t)9), NULL);
+		float L_160 = __this->___lastState;
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_161 = __this->___game;
+		NullCheck(L_161);
+		GameConfig_t888251607D5201684F416A1C67592368B4EC0CEB* L_162 = L_161->___config;
 		NullCheck(L_162);
-		L_162->___DelayTicks = L_169;
-	}
-
-IL_0392:
-	{
-		float L_170 = __this->___lastState;
-		__this->___lastArrival = L_170;
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_171 = __this->___prediction;
-		if (L_171)
+		int32_t L_163 = L_162->___tickRate;
+		NullCheck(L_155);
+		bool L_164;
+		L_164 = RaceSnapshotBuffer_Add_m408D553C619F37312EF2C8C136DEC59563903513(L_155, L_157, L_159, L_160, L_163, NULL);
+		float L_165 = __this->___lastState;
+		__this->___lastArrival = L_165;
+		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_166 = __this->___prediction;
+		if (L_166)
 		{
-			goto IL_03eb;
+			goto IL_03b7;
 		}
 	}
 	{
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_172 = __this->___game;
-		NullCheck(L_172);
-		RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* L_173;
-		L_173 = RushBootstrap_get_Race_mD56B54D49DE9334943FCEA1461CE0D908AFF6C87_inline(L_172, NULL);
-		int32_t L_174;
-		L_174 = CloudRaceClient_get_LocalIndex_m00BBE304368CD82003E1A517CE1F898F1CF31798_inline(__this, NULL);
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_175 = __this->___game;
-		NullCheck(L_175);
-		VehicleCatalogClient_tF9068C663562E8062863731668AF5A3915C3CF79* L_176 = L_175->___catalog;
-		NullCheck(L_176);
-		VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* L_177;
-		L_177 = VehicleCatalogClient_Find_m9E9DEBB117812A6174E9B29C0B1012AF3FC41D04(L_176, _stringLiteralC45BAC28AEFA1EAF9E63274FC273DBE51E8FBF94, NULL);
-		VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* L_178 = L_177;
-		if (L_178)
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_167 = __this->___game;
+		NullCheck(L_167);
+		RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* L_168;
+		L_168 = RushBootstrap_get_Race_mD56B54D49DE9334943FCEA1461CE0D908AFF6C87_inline(L_167, NULL);
+		int32_t L_169;
+		L_169 = CloudRaceClient_get_LocalIndex_m00BBE304368CD82003E1A517CE1F898F1CF31798_inline(__this, NULL);
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_170 = __this->___game;
+		NullCheck(L_170);
+		VehicleCatalogClient_tF9068C663562E8062863731668AF5A3915C3CF79* L_171 = L_170->___catalog;
+		NullCheck(L_171);
+		VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* L_172;
+		L_172 = VehicleCatalogClient_Find_m9E9DEBB117812A6174E9B29C0B1012AF3FC41D04(L_171, _stringLiteralC45BAC28AEFA1EAF9E63274FC273DBE51E8FBF94, NULL);
+		VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* L_173 = L_172;
+		if (L_173)
 		{
-			G_B45_0 = L_178;
-			G_B45_1 = L_174;
-			G_B45_2 = L_173;
-			G_B45_3 = __this;
-			goto IL_03dc;
+			G_B43_0 = L_173;
+			G_B43_1 = L_169;
+			G_B43_2 = L_168;
+			G_B43_3 = __this;
+			goto IL_03a8;
 		}
-		G_B44_0 = L_178;
-		G_B44_1 = L_174;
-		G_B44_2 = L_173;
-		G_B44_3 = __this;
+		G_B42_0 = L_173;
+		G_B42_1 = L_169;
+		G_B42_2 = L_168;
+		G_B42_3 = __this;
 	}
 	{
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_179 = __this->___game;
-		NullCheck(L_179);
-		VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* L_180;
-		L_180 = RushBootstrap_get_Car_m4A85196A239C57BC3049CAA83AC1A7970CACAFEF(L_179, NULL);
-		G_B45_0 = L_180;
-		G_B45_1 = G_B44_1;
-		G_B45_2 = G_B44_2;
-		G_B45_3 = G_B44_3;
-	}
-
-IL_03dc:
-	{
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_181 = (RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25*)il2cpp_codegen_object_new(RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25_il2cpp_TypeInfo_var);
-		RacePrediction__ctor_m8B92BD1EA903A13088C7C3C97BED4C266038E31A(L_181, G_B45_2, G_B45_1, G_B45_0, NULL);
-		NullCheck(G_B45_3);
-		G_B45_3->___prediction = L_181;
-		Il2CppCodeGenWriteBarrier((void**)(&G_B45_3->___prediction), (void*)L_181);
-		goto IL_04ad;
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_174 = __this->___game;
+		NullCheck(L_174);
+		VehicleDefinition_tC8CAFD9BC9F3D82837A750BA4656F6F35BF280EB* L_175;
+		L_175 = RushBootstrap_get_Car_m4A85196A239C57BC3049CAA83AC1A7970CACAFEF(L_174, NULL);
+		G_B43_0 = L_175;
+		G_B43_1 = G_B42_1;
+		G_B43_2 = G_B42_2;
+		G_B43_3 = G_B42_3;
 	}
 
-IL_03eb:
+IL_03a8:
 	{
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_182 = __this->___prediction;
-		NullCheck(L_182);
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_183;
-		L_183 = RacePrediction_get_State_mCED661B5F82A8A6F4EF3F6C1C75E5E78A2964820(L_182, NULL);
+		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_176 = (RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25*)il2cpp_codegen_object_new(RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25_il2cpp_TypeInfo_var);
+		RacePrediction__ctor_m8B92BD1EA903A13088C7C3C97BED4C266038E31A(L_176, G_B43_2, G_B43_1, G_B43_0, NULL);
+		NullCheck(G_B43_3);
+		G_B43_3->___prediction = L_176;
+		Il2CppCodeGenWriteBarrier((void**)(&G_B43_3->___prediction), (void*)L_176);
+		goto IL_0479;
+	}
+
+IL_03b7:
+	{
+		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_177 = __this->___prediction;
+		NullCheck(L_177);
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_178;
+		L_178 = RacePrediction_get_State_mCED661B5F82A8A6F4EF3F6C1C75E5E78A2964820(L_177, NULL);
+		NullCheck(L_178);
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_179;
+		L_179 = RacerState_Copy_m6F58851AF771DB30D4BC0185D4A8C70A172F410E(L_178, NULL);
+		V_7 = L_179;
+		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_180 = __this->___prediction;
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_181 = __this->___game;
+		NullCheck(L_181);
+		RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* L_182;
+		L_182 = RushBootstrap_get_Race_mD56B54D49DE9334943FCEA1461CE0D908AFF6C87_inline(L_181, NULL);
+		CloudSnapshot_t224A74C1162E23C79DF867293BA5D5EC83D11B26* L_183 = V_3;
 		NullCheck(L_183);
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_184;
-		L_184 = RacerState_Copy_m6F58851AF771DB30D4BC0185D4A8C70A172F410E(L_183, NULL);
-		V_7 = L_184;
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_185 = __this->___prediction;
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_186 = __this->___game;
-		NullCheck(L_186);
-		RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* L_187;
-		L_187 = RushBootstrap_get_Race_mD56B54D49DE9334943FCEA1461CE0D908AFF6C87_inline(L_186, NULL);
-		CloudSnapshot_t224A74C1162E23C79DF867293BA5D5EC83D11B26* L_188 = V_3;
+		Int32U5BU5D_t19C97395396A72ECAF310612F0760F165060314C* L_184 = L_183->___ack;
+		int32_t L_185;
+		L_185 = CloudRaceClient_get_LocalIndex_m00BBE304368CD82003E1A517CE1F898F1CF31798_inline(__this, NULL);
+		NullCheck(L_184);
+		int32_t L_186 = L_185;
+		int32_t L_187 = (L_184)->GetAt(static_cast<il2cpp_array_size_t>(L_186));
+		NullCheck(L_180);
+		RacePrediction_Reconcile_m842D440F7F38C79E9CEC324C4D6FFDC66AA73900(L_180, L_182, L_187, NULL);
+		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_188 = __this->___prediction;
 		NullCheck(L_188);
-		Int32U5BU5D_t19C97395396A72ECAF310612F0760F165060314C* L_189 = L_188->___ack;
-		int32_t L_190;
-		L_190 = CloudRaceClient_get_LocalIndex_m00BBE304368CD82003E1A517CE1F898F1CF31798_inline(__this, NULL);
-		NullCheck(L_189);
-		int32_t L_191 = L_190;
-		int32_t L_192 = (L_189)->GetAt(static_cast<il2cpp_array_size_t>(L_191));
-		NullCheck(L_185);
-		RacePrediction_Reconcile_m842D440F7F38C79E9CEC324C4D6FFDC66AA73900(L_185, L_187, L_192, NULL);
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_193 = __this->___prediction;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_189;
+		L_189 = RacePrediction_get_State_mCED661B5F82A8A6F4EF3F6C1C75E5E78A2964820(L_188, NULL);
+		V_8 = L_189;
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_190 = __this->___correctionOffset;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_191 = V_7;
+		NullCheck(L_191);
+		float L_192 = L_191->___distance;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_193 = V_8;
 		NullCheck(L_193);
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_194;
-		L_194 = RacePrediction_get_State_mCED661B5F82A8A6F4EF3F6C1C75E5E78A2964820(L_193, NULL);
-		V_8 = L_194;
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_195 = __this->___correctionOffset;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_196 = V_7;
-		NullCheck(L_196);
-		float L_197 = L_196->___distance;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_198 = V_8;
-		NullCheck(L_198);
-		float L_199 = L_198->___distance;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_200 = V_7;
-		NullCheck(L_200);
-		float L_201 = L_200->___lane;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_202 = V_8;
-		NullCheck(L_202);
-		float L_203 = L_202->___lane;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_204 = V_7;
-		NullCheck(L_204);
-		float L_205 = L_204->___height;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_206 = V_8;
-		NullCheck(L_206);
-		float L_207 = L_206->___height;
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_208;
-		memset((&L_208), 0, sizeof(L_208));
-		Vector3__ctor_m376936E6B999EF1ECBE57D990A386303E2283DE0_inline((&L_208), ((float)il2cpp_codegen_subtract(L_197, L_199)), ((float)il2cpp_codegen_subtract(L_201, L_203)), ((float)il2cpp_codegen_subtract(L_205, L_207)), NULL);
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_209;
-		L_209 = Vector3_op_Addition_m78C0EC70CB66E8DCAC225743D82B268DAEE92067_inline(L_195, L_208, NULL);
-		__this->___correctionOffset = L_209;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_210 = V_7;
-		NullCheck(L_210);
-		int32_t L_211 = L_210->___resetCount;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_212 = V_8;
-		NullCheck(L_212);
-		int32_t L_213 = L_212->___resetCount;
-		if ((!(((uint32_t)L_211) == ((uint32_t)L_213))))
+		float L_194 = L_193->___distance;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_195 = V_7;
+		NullCheck(L_195);
+		float L_196 = L_195->___lane;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_197 = V_8;
+		NullCheck(L_197);
+		float L_198 = L_197->___lane;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_199 = V_7;
+		NullCheck(L_199);
+		float L_200 = L_199->___height;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_201 = V_8;
+		NullCheck(L_201);
+		float L_202 = L_201->___height;
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_203;
+		memset((&L_203), 0, sizeof(L_203));
+		Vector3__ctor_m376936E6B999EF1ECBE57D990A386303E2283DE0_inline((&L_203), ((float)il2cpp_codegen_subtract(L_192, L_194)), ((float)il2cpp_codegen_subtract(L_196, L_198)), ((float)il2cpp_codegen_subtract(L_200, L_202)), NULL);
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_204;
+		L_204 = Vector3_op_Addition_m78C0EC70CB66E8DCAC225743D82B268DAEE92067_inline(L_190, L_203, NULL);
+		__this->___correctionOffset = L_204;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_205 = V_7;
+		NullCheck(L_205);
+		int32_t L_206 = L_205->___resetCount;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_207 = V_8;
+		NullCheck(L_207);
+		int32_t L_208 = L_207->___resetCount;
+		if ((!(((uint32_t)L_206) == ((uint32_t)L_208))))
 		{
-			goto IL_04a2;
+			goto IL_046e;
 		}
 	}
 	{
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_214 = V_7;
-		NullCheck(L_214);
-		bool L_215 = L_214->___eliminated;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_216 = V_8;
-		NullCheck(L_216);
-		bool L_217 = L_216->___eliminated;
-		if ((!(((uint32_t)L_215) == ((uint32_t)L_217))))
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_209 = V_7;
+		NullCheck(L_209);
+		bool L_210 = L_209->___eliminated;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_211 = V_8;
+		NullCheck(L_211);
+		bool L_212 = L_211->___eliminated;
+		if ((!(((uint32_t)L_210) == ((uint32_t)L_212))))
 		{
-			goto IL_04a2;
+			goto IL_046e;
 		}
 	}
 	{
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* L_218 = (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2*)(&__this->___correctionOffset);
-		float L_219;
-		L_219 = Vector3_get_magnitude_mF0D6017E90B345F1F52D1CC564C640F1A847AF2D_inline(L_218, NULL);
-		if ((!(((float)L_219) > ((float)(12.0f)))))
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* L_213 = (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2*)(&__this->___correctionOffset);
+		float L_214;
+		L_214 = Vector3_get_magnitude_mF0D6017E90B345F1F52D1CC564C640F1A847AF2D_inline(L_213, NULL);
+		if ((!(((float)L_214) > ((float)(12.0f)))))
 		{
-			goto IL_04ad;
+			goto IL_0479;
 		}
 	}
 
-IL_04a2:
+IL_046e:
 	{
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_220;
-		L_220 = Vector3_get_zero_m0C1249C3F25B1C70EAD3CC8B31259975A457AE39_inline(NULL);
-		__this->___correctionOffset = L_220;
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_215;
+		L_215 = Vector3_get_zero_m0C1249C3F25B1C70EAD3CC8B31259975A457AE39_inline(NULL);
+		__this->___correctionOffset = L_215;
 	}
 
-IL_04ad:
+IL_0479:
 	{
-		bool L_221;
-		L_221 = CloudRaceClient_get_Searching_m50FAE5B485B176E31522973F335FD28070066FA5_inline(__this, NULL);
-		if (!L_221)
+		bool L_216;
+		L_216 = CloudRaceClient_get_Searching_m50FAE5B485B176E31522973F335FD28070066FA5_inline(__this, NULL);
+		if (!L_216)
 		{
-			goto IL_04d5;
+			goto IL_04a1;
 		}
 	}
 	{
-		float L_222;
-		L_222 = CloudRaceClient_get_WaitSeconds_mED135C7B80CE4BFF1BDC4184C2B823489F6774B6_inline(__this, NULL);
-		if ((!(((float)L_222) <= ((float)(3.0f)))))
+		float L_217;
+		L_217 = CloudRaceClient_get_WaitSeconds_mED135C7B80CE4BFF1BDC4184C2B823489F6774B6_inline(__this, NULL);
+		if ((!(((float)L_217) <= ((float)(3.0f)))))
 		{
-			goto IL_04d5;
+			goto IL_04a1;
 		}
 	}
 	{
 		CloudRaceClient_set_Searching_mCF8CAF776592E1D3B5314E11CE167027FDDE1BEC_inline(__this, (bool)0, NULL);
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_223 = __this->___game;
-		NullCheck(L_223);
-		RushBootstrap_Show_mAC3DE21D48ADFD53FD7A5BEBE4F3F1C9EEA159EE(L_223, 1, NULL);
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_218 = __this->___game;
+		NullCheck(L_218);
+		RushBootstrap_Show_mAC3DE21D48ADFD53FD7A5BEBE4F3F1C9EEA159EE(L_218, 1, NULL);
 	}
 
-IL_04d5:
+IL_04a1:
 	{
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_224 = __this->___game;
-		bool L_225;
-		L_225 = CloudRaceClient_get_Searching_m50FAE5B485B176E31522973F335FD28070066FA5_inline(__this, NULL);
-		if (L_225)
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_219 = __this->___game;
+		bool L_220;
+		L_220 = CloudRaceClient_get_Searching_m50FAE5B485B176E31522973F335FD28070066FA5_inline(__this, NULL);
+		if (L_220)
 		{
-			G_B57_0 = L_224;
-			goto IL_0508;
+			G_B55_0 = L_219;
+			goto IL_04d4;
 		}
-		G_B54_0 = L_224;
+		G_B52_0 = L_219;
 	}
 	{
-		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_226 = __this->___game;
-		NullCheck(L_226);
-		RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* L_227;
-		L_227 = RushBootstrap_get_Race_mD56B54D49DE9334943FCEA1461CE0D908AFF6C87_inline(L_226, NULL);
-		NullCheck(L_227);
-		float L_228 = L_227->___time;
-		if ((((float)L_228) < ((float)(0.0f))))
+		RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A* L_221 = __this->___game;
+		NullCheck(L_221);
+		RaceSimulation_t2CCF3ADFB6385EBD631BDF22F1517336BB3D4EC1* L_222;
+		L_222 = RushBootstrap_get_Race_mD56B54D49DE9334943FCEA1461CE0D908AFF6C87_inline(L_221, NULL);
+		NullCheck(L_222);
+		float L_223 = L_222->___time;
+		if ((((float)L_223) < ((float)(0.0f))))
 		{
-			G_B56_0 = G_B54_0;
-			goto IL_0501;
+			G_B54_0 = G_B52_0;
+			goto IL_04cd;
 		}
-		G_B55_0 = G_B54_0;
+		G_B53_0 = G_B52_0;
 	}
 	{
-		G_B58_0 = _stringLiteral578D24E72D17D68BFD9A84646A85537B0FD03E50;
-		G_B58_1 = G_B55_0;
-		goto IL_050d;
-	}
-
-IL_0501:
-	{
-		G_B58_0 = _stringLiteralB6834C27986F78D3249911D54A18A6E4073176A6;
-		G_B58_1 = G_B56_0;
-		goto IL_050d;
+		G_B56_0 = _stringLiteral578D24E72D17D68BFD9A84646A85537B0FD03E50;
+		G_B56_1 = G_B53_0;
+		goto IL_04d9;
 	}
 
-IL_0508:
+IL_04cd:
 	{
-		G_B58_0 = _stringLiteral730D23EEBB881C7116E738E1C186A85B1146144A;
-		G_B58_1 = G_B57_0;
+		G_B56_0 = _stringLiteralB6834C27986F78D3249911D54A18A6E4073176A6;
+		G_B56_1 = G_B54_0;
+		goto IL_04d9;
 	}
 
-IL_050d:
+IL_04d4:
 	{
-		NullCheck(G_B58_1);
-		G_B58_1->___Status = G_B58_0;
-		Il2CppCodeGenWriteBarrier((void**)(&G_B58_1->___Status), (void*)G_B58_0);
+		G_B56_0 = _stringLiteral730D23EEBB881C7116E738E1C186A85B1146144A;
+		G_B56_1 = G_B55_0;
+	}
+
+IL_04d9:
+	{
+		NullCheck(G_B56_1);
+		G_B56_1->___Status = G_B56_0;
+		Il2CppCodeGenWriteBarrier((void**)(&G_B56_1->___Status), (void*)G_B56_0);
 		return;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* CloudRaceClient_DisplayState_mC8B694F5B9C75B8DB9E3DCA4106F022E1849D9FF (CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* __this, int32_t ___0_index, const RuntimeMethod* method) 
 {
 	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* V_0 = NULL;
-	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* V_1 = NULL;
-	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* V_2 = NULL;
-	float V_3 = 0.0f;
 	RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* G_B8_0 = NULL;
 	RaceSnapshotBuffer_t4AC9689A8FD675303C6E969F3BD499F39D2203DB* G_B7_0 = NULL;
 	RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* G_B9_0 = NULL;
@@ -17026,15 +17003,15 @@ IL_0023:
 		NullCheck(L_31);
 		int32_t L_33 = L_32;
 		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_34 = (L_31)->GetAt(static_cast<il2cpp_array_size_t>(L_33));
-		V_1 = L_34;
+		V_0 = L_34;
 		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_35 = L_24;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_36 = V_1;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_36 = V_0;
 		NullCheck(L_36);
 		bool L_37 = L_36->___finished;
 		NullCheck(L_35);
 		L_35->___finished = L_37;
 		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_38 = L_35;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_39 = V_1;
+		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_39 = V_0;
 		NullCheck(L_39);
 		bool L_40 = L_39->___eliminated;
 		NullCheck(L_38);
@@ -17096,100 +17073,7 @@ IL_00d1:
 
 IL_00ec:
 	{
-		V_0 = G_B11_0;
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_53 = __this->___prediction;
-		if (!L_53)
-		{
-			goto IL_01a9;
-		}
-	}
-	{
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_54 = __this->___prediction;
-		int32_t L_55 = ___0_index;
-		NullCheck(L_54);
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_56;
-		L_56 = RacePrediction_Remote_m82D278BE22305AB08E3084B1023D309C8CDA5C29(L_54, L_55, NULL);
-		V_2 = L_56;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_57 = V_2;
-		NullCheck(L_57);
-		float L_58 = L_57->___distance;
-		RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* L_59 = __this->___prediction;
-		NullCheck(L_59);
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_60;
-		L_60 = RacePrediction_get_State_mCED661B5F82A8A6F4EF3F6C1C75E5E78A2964820(L_59, NULL);
-		NullCheck(L_60);
-		float L_61 = L_60->___distance;
-		float L_62;
-		L_62 = fabsf(((float)il2cpp_codegen_subtract(L_58, L_61)));
-		float L_63;
-		L_63 = Mathf_InverseLerp_mBD7EC6A7173CE082226077E1557D5BC2D2AE0D9D_inline((45.0f), (15.0f), L_62, NULL);
-		V_3 = L_63;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_64 = V_0;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_65 = V_0;
-		NullCheck(L_65);
-		float L_66 = L_65->___distance;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_67 = V_2;
-		NullCheck(L_67);
-		float L_68 = L_67->___distance;
-		float L_69 = V_3;
-		float L_70;
-		L_70 = Mathf_Lerp_m47EF2FFB7647BD0A1FDC26DC03E28B19812139B5_inline(L_66, L_68, L_69, NULL);
-		NullCheck(L_64);
-		L_64->___distance = L_70;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_71 = V_0;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_72 = V_0;
-		NullCheck(L_72);
-		float L_73 = L_72->___lane;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_74 = V_2;
-		NullCheck(L_74);
-		float L_75 = L_74->___lane;
-		float L_76 = V_3;
-		float L_77;
-		L_77 = Mathf_Lerp_m47EF2FFB7647BD0A1FDC26DC03E28B19812139B5_inline(L_73, L_75, L_76, NULL);
-		NullCheck(L_71);
-		L_71->___lane = L_77;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_78 = V_0;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_79 = V_0;
-		NullCheck(L_79);
-		float L_80 = L_79->___height;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_81 = V_2;
-		NullCheck(L_81);
-		float L_82 = L_81->___height;
-		float L_83 = V_3;
-		float L_84;
-		L_84 = Mathf_Lerp_m47EF2FFB7647BD0A1FDC26DC03E28B19812139B5_inline(L_80, L_82, L_83, NULL);
-		NullCheck(L_78);
-		L_78->___height = L_84;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_85 = V_0;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_86 = V_0;
-		NullCheck(L_86);
-		float L_87 = L_86->___spinYaw;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_88 = V_2;
-		NullCheck(L_88);
-		float L_89 = L_88->___spinYaw;
-		float L_90 = V_3;
-		float L_91;
-		L_91 = Mathf_LerpAngle_m0653422E15193C2E4A4E5AF05236B6315C789C23_inline(L_87, L_89, L_90, NULL);
-		NullCheck(L_85);
-		L_85->___spinYaw = L_91;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_92 = V_0;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_93 = V_0;
-		NullCheck(L_93);
-		float L_94 = L_93->___driftAngle;
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_95 = V_2;
-		NullCheck(L_95);
-		float L_96 = L_95->___driftAngle;
-		float L_97 = V_3;
-		float L_98;
-		L_98 = Mathf_LerpAngle_m0653422E15193C2E4A4E5AF05236B6315C789C23_inline(L_94, L_96, L_97, NULL);
-		NullCheck(L_92);
-		L_92->___driftAngle = L_98;
-	}
-
-IL_01a9:
-	{
-		RacerState_tCA2C2C34338A73F58E2F5B5038AE06A19B3AFD34* L_99 = V_0;
-		return L_99;
+		return G_B11_0;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CloudRaceClient_Step_m05878B04CF0F3D6A35D53DD06BFAD43E8AE8C926 (CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* __this, float ___0_dt, DriverInput_tD0F4F03F7372750026BFF79083E6AC76A63CFBFE ___1_input, const RuntimeMethod* method) 
@@ -20950,113 +20834,11 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool Single_IsFinite_m50EDEFA3EDE
 		return (bool)((((int32_t)((int32_t)(L_1&((int32_t)2147483647LL)))) < ((int32_t)((int32_t)2139095040)))? 1 : 0);
 	}
 }
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t Mathf_CeilToInt_mF2BF9F4261B3431DC20E10A46CFEEED103C48963_inline (float ___0_f, const RuntimeMethod* method) 
-{
-	static bool s_Il2CppMethodInitialized;
-	if (!s_Il2CppMethodInitialized)
-	{
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
-		s_Il2CppMethodInitialized = true;
-	}
-	int32_t V_0 = 0;
-	{
-		float L_0 = ___0_f;
-		il2cpp_codegen_runtime_class_init_inline(Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
-		double L_1;
-		L_1 = ceil(((double)L_0));
-		V_0 = il2cpp_codegen_cast_double_to_int<int32_t>(L_1);
-		goto IL_000c;
-	}
-
-IL_000c:
-	{
-		int32_t L_2 = V_0;
-		return L_2;
-	}
-}
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float CloudRaceClient_get_WaitSeconds_mED135C7B80CE4BFF1BDC4184C2B823489F6774B6_inline (CloudRaceClient_tBF7D6F09AD1FC82560E7E839FD083F61CFDECAE5* __this, const RuntimeMethod* method) 
 {
 	{
 		float L_0 = __this->___U3CWaitSecondsU3Ek__BackingField;
 		return L_0;
-	}
-}
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float Mathf_InverseLerp_mBD7EC6A7173CE082226077E1557D5BC2D2AE0D9D_inline (float ___0_a, float ___1_b, float ___2_value, const RuntimeMethod* method) 
-{
-	bool V_0 = false;
-	float V_1 = 0.0f;
-	{
-		float L_0 = ___0_a;
-		float L_1 = ___1_b;
-		V_0 = (bool)((((int32_t)((((float)L_0) == ((float)L_1))? 1 : 0)) == ((int32_t)0))? 1 : 0);
-		bool L_2 = V_0;
-		if (!L_2)
-		{
-			goto IL_001b;
-		}
-	}
-	{
-		float L_3 = ___2_value;
-		float L_4 = ___0_a;
-		float L_5 = ___1_b;
-		float L_6 = ___0_a;
-		float L_7;
-		L_7 = Mathf_Clamp01_mA7E048DBDA832D399A581BE4D6DED9FA44CE0F14_inline(((float)(((float)il2cpp_codegen_subtract(L_3, L_4))/((float)il2cpp_codegen_subtract(L_5, L_6)))), NULL);
-		V_1 = L_7;
-		goto IL_0023;
-	}
-
-IL_001b:
-	{
-		V_1 = (0.0f);
-		goto IL_0023;
-	}
-
-IL_0023:
-	{
-		float L_8 = V_1;
-		return L_8;
-	}
-}
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float Mathf_LerpAngle_m0653422E15193C2E4A4E5AF05236B6315C789C23_inline (float ___0_a, float ___1_b, float ___2_t, const RuntimeMethod* method) 
-{
-	float V_0 = 0.0f;
-	bool V_1 = false;
-	float V_2 = 0.0f;
-	{
-		float L_0 = ___1_b;
-		float L_1 = ___0_a;
-		float L_2;
-		L_2 = Mathf_Repeat_m6F1560A163481BB311D685294E1B463C3E4EB3BA_inline(((float)il2cpp_codegen_subtract(L_0, L_1)), (360.0f), NULL);
-		V_0 = L_2;
-		float L_3 = V_0;
-		V_1 = (bool)((((float)L_3) > ((float)(180.0f)))? 1 : 0);
-		bool L_4 = V_1;
-		if (!L_4)
-		{
-			goto IL_0023;
-		}
-	}
-	{
-		float L_5 = V_0;
-		V_0 = ((float)il2cpp_codegen_subtract(L_5, (360.0f)));
-	}
-
-IL_0023:
-	{
-		float L_6 = ___0_a;
-		float L_7 = V_0;
-		float L_8 = ___2_t;
-		float L_9;
-		L_9 = Mathf_Clamp01_mA7E048DBDA832D399A581BE4D6DED9FA44CE0F14_inline(L_8, NULL);
-		V_2 = ((float)il2cpp_codegen_add(L_6, ((float)il2cpp_codegen_multiply(L_7, L_9))));
-		goto IL_0030;
-	}
-
-IL_0030:
-	{
-		float L_10 = V_2;
-		return L_10;
 	}
 }
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t RacePrediction_get_Sequence_mE508691AEC3DBAEA15257B81212B5F94BC92225E_inline (RacePrediction_t5E977A6C51792E5555EA5BB948993BB94EEBDE25* __this, const RuntimeMethod* method) 
