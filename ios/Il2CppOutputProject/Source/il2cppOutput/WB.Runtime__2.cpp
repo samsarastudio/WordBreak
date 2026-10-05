@@ -3630,6 +3630,7 @@ struct RushBootstrap_t020458505258712916EFFA70CF0BA940D6F9348A  : public MonoBeh
 	bool ___cameraReady;
 	int32_t ___joystickFinger;
 	Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 ___U3CJoystickU3Ek__BackingField;
+	float ___resetInputUntil;
 	bool ___awarded;
 	bool ___smokeTest;
 	bool ___networkTest;

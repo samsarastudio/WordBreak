@@ -2642,6 +2642,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUIStyle_AssignRectOffset_Injected();
 		Register_UnityEngine_GUIStyle_AssignRectOffset_Injected();
 
+		//System.Void UnityEngine.GUIStyle::Internal_CalcSize_Injected(System.IntPtr,UnityEngine.GUIContent,UnityEngine.Vector2&)
+		void Register_UnityEngine_GUIStyle_Internal_CalcSize_Injected();
+		Register_UnityEngine_GUIStyle_Internal_CalcSize_Injected();
+
 		//System.Void UnityEngine.GUIStyle::Internal_Destroy(System.IntPtr)
 		void Register_UnityEngine_GUIStyle_Internal_Destroy();
 		Register_UnityEngine_GUIStyle_Internal_Destroy();

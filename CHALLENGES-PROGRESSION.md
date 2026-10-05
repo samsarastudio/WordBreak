@@ -40,3 +40,13 @@ Create a production 3-column by 2-row sprite atlas of SIX circular icon-only tou
 
 Atlas refinement prompt:
 Edit this UI sprite atlas. Preserve exactly the six circular buttons, their icon designs, colors, sizes and 3-column 2-row arrangement. Remove ALL the gray/brown surrounding background and drop shadows outside each button's dark outer circular edge, replacing those pixels with genuine alpha transparency, including gutters between circles. Do not add checkerboards or a matte. Keep each circular icon opaque inside its edge. No text, no labels, no new elements. Output PNG with transparent background. Each button must be centered within its equal-sized square grid cell; keep all six the same diameter.
+
+## UI review — 1.3.1
+- Primary flow: Garage > Play > Choose mode > Choose track > Start race. Choosing or purchasing a track stays on the track screen and preserves the mode. Mode selection never depends on the previously selected track. Back buttons name their destination.
+- Track selection shows selected state, distance, deadline, mode-specific target, price and missing campaign/point requirements. Buying is separate from starting. Locked car previews offer an explicit switch to the free Cinder GT.
+- Removed redundant accelerator/reverse touch buttons. Joystick up accelerates, down brakes before reversing, sides steer, and release coasts. Only brake, drift and boost remain as circular race controls. Reset is in the pause menu with its live time penalty; an online menu clearly says the race continues.
+- Added an illustrated How to Drive page accessible from garage, modes, settings, pause and failure. Menu help text explains icon actions, coasting, reverse, reset and keyboard equivalents.
+- Replaced garage track browsing with campaign progress and a single Play entry point. Costs state RP or CR; unavailable purchases/upgrades are disabled. Results show each mode's actual target, earned currencies, and explicit replay/track/mode choices.
+- Local multiplayer setup explains same-Wi-Fi requirements and labels the friend's local IP field. It no longer defaults to loopback or presents technical port instructions as the main flow.
+- All UI and touch coordinates share a uniform safe-area viewport. Circles remain circular at wider phone/tablet ratios; pixel-to-touch mapping includes safe-area offsets.
+- Existing generated artwork is reused. No new AI image generation was needed for this review.

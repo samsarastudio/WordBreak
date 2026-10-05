@@ -133,3 +133,14 @@ The final ARM64 Android APK was rebuilt successfully with the corrected palette 
 - Final feature run passed both side-mode targets (Time Attack score 1000; Stunt Run 2360) and purchase/milestone isolation (Logs/features-final-runtime.log). Two local clients connected using protocol 5 and finished at 54.68s/62.32s, with matching destroyed-world state 61075 (Logs/client1.log and client2.log).
 
 - Final circular-control iOS export passed (Logs/circular-final-ios.log). Windows 1.3.0 was packaged, ZIP integrity checked and published as immutable asset WorldBreakRush-Windows-1.3.0-ab17041b15d8.zip on the game-updates release/feed.
+
+## UI navigation and control review — version 1.3.1
+- Mode-first flow implemented with explicit track selection, unlock purchase and Start Race. Garage no longer requires cycling tracks before choosing a mode. Track selection preserves mode; side-mode/campaign isolation remains intact.
+- Three touch actions remain: brake, drift, boost. Joystick supplies proportional forward/reverse throttle and steering; release coasts. Pause offers reset with an explicit live penalty, controls help and return to garage. Reset input remains asserted briefly so it survives different render/network tick rates.
+- Illustrated controls guide, readable currency/cost labels, mode-specific result targets, clearer locked-car fallback, and friend-IP labels on local multiplayer. All UI and touch targets use one uniformly scaled safe-area viewport.
+- 76/76 EditMode tests passed (Logs/ui-review-final-tests.xml), including circular hit boundaries, removed button hit rejection and landscape safe-area containment. The first safe-area test caught floating point undershoot at an edge; viewport padding is clamped nonnegative.
+- Runtime touch tests passed at 1280x720 and 1600x720: each of the three actions, joystick forward/reverse, simultaneous steering/boost, release/coast, pause freeze and reset resume (Logs/ui-review-controls.log; Logs/ui-final-controls.log).
+- Reviewed captures of garage, modes, track selection, illustrated controls, settings, profile, updates, multiplayer and widescreen pause. Fixed clipped upgrade text with font fitting and fitted all six built-in track cards without cropping. Final screenshots use Documentation/Screenshots/ui-final-*.
+- Physical iPhone safe-area and touch comfort testing are still required; no claim of device testing is made.
+
+- Final feature run passed (Logs/ui-final-features.log): Time Attack met its time target, Stunt Run earned 2360/1450, and mode selection survived track browsing. Both LAN clients finished (54.65s/60.55s) with matching destruction state 61075. iOS export passed (Logs/ui-review-ios.log); prepare_ios verified landscape and the live production catalog (revision 10, seven cars). Windows 1.3.1 ZIP integrity passed and was published to the game update feed. Codemagic compilation/signing remains required for iOS.
