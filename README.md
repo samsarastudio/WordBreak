@@ -1,4 +1,10 @@
-# WordBreak — Car Catalog Server
+# WORLD BREAK RUSH — iOS 1.6.0 export
+
+This `codex/ios-codemagic` branch contains the generated Unity Xcode client project. In Codemagic select **ios-compile-check** for the existing unsigned IPA workflow. See [IOS-CODEMAGIC.md](IOS-CODEMAGIC.md).
+
+Online races use protocol 8 and the dedicated laptop worker through `https://game.inmomentservices.com`. **Deploy the Pi server from `main`, not this iOS branch.** The older backend documentation below is retained for historical context; this push does not update or deploy that backend.
+
+# WordBreak — Car Catalog Server (historical)
 
 Server and browser admin for WORLD//BREAK vehicle content. Upload a car ZIP, review its 3D model and studio images, repair wheel assignments, and publish catalog updates to compatible game clients without rebuilding the game.
 

@@ -15,13 +15,15 @@ References: [Codemagic signing](https://docs.codemagic.io/yaml-code-signing/sign
 
 ## What this export contains
 
+Current export: **1.6.0**, protocol **8**. Online races use the dedicated Windows laptop worker through `https://game.inmomentservices.com`. All player clients use local prediction, authoritative reconciliation and remote interpolation. The first player is no longer physics authority. Matchmaking stays on the waiting screen before the race countdown. Online jump slow-motion is disabled; solo cinematics remain enabled. Player-to-player collision and tailspin tests passed with five Windows clients and the dedicated worker. iOS device performance and the Xcode archive still require Codemagic/device validation.
+
 Version **1.1.0** adds automatic data-only DLC: course/disaster layouts, supported gameplay tuning and feature switches, plus existing car/model downloads. The first pack supplies Aftershock Run. Compatible iOS apps download and cache DLC automatically in the garage, without reinstalling or signing a new IPA. Server configuration is fixed; there is no editable server field. See `GAME-UPDATES.md` for publishing future DLC. Completely new executable functionality still requires a new IPA.
 
-The handling revision adds a two-axis touch joystick (up/down for forward/reverse, left/right for steering), separate accelerator/brake/reverse buttons, and RESET with a five-second recovery stop. The city countdown continues during recovery; reset rewinds to a clear approach instead of skipping ahead. Keyboard: W/Up gas, S/Down brake into reverse, A/D steering, B brake, Space drift, Shift boost, R reset. Analog throttle controls engine force, releasing throttle coasts, and reverse has a lower speed limit. The cinematic camera shares the car's smoothed render position and eases its orbit transitions. Driving remains an arcade path-based model with chassis collision sweeps.
+Driving uses the mobile joystick and circular action controls. Analog throttle controls engine force, releasing throttle coasts, and reverse has a lower speed limit. Reset adds a recovery penalty while the city countdown continues. Driving remains an arcade path-based model with chassis collision sweeps.
 
 The current Unity game includes train launch ramps, jump slow motion and orbit camera, a 90-second escape deadline with city collapse, and a finish drift celebration. The HTTPS health and catalog endpoints returned 200, and the Unity player fetched the live catalog and drove its selected car successfully. The user returned a successful Codemagic Xcode archive; its compiled ARM64 app was repackaged and checked as an unsigned IPA. Personal-device signing and installation have not been tested here.
 
-The domain is the **car-catalog service**. Production builds migrate saved catalog addresses to it automatically. It is not an NGO race server; LAN multiplayer tools are restricted to development builds.
+The domain serves catalog/admin, matchmaking and the authenticated WebSocket relay. Race physics run on the separately hosted Windows laptop. Keep the laptop server awake and connected for online play. This iOS export is a client; Codemagic does not host matchmaking or race physics. Deploy Pi server changes from `main`, not this generated iOS branch.
 
 ## Updating the game later
 

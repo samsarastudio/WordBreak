@@ -18,7 +18,8 @@ with (IOS / "Info.plist").open("rb") as source:
     info = plistlib.load(source)
 orientations = info.get("UISupportedInterfaceOrientations", [])
 assert orientations and all("Landscape" in item for item in orientations), orientations
-info.setdefault("NSLocalNetworkUsageDescription", "Connect to nearby WORLD BREAK RUSH race hosts on your local network.")
+# Online races use the HTTPS service; do not show an obsolete LAN permission explanation.
+info.pop("NSLocalNetworkUsageDescription", None)
 with (IOS / "Info.plist").open("wb") as target:
     plistlib.dump(info, target, sort_keys=False)
 
@@ -48,6 +49,7 @@ for route in ("health", "v1/catalog"):
         payload = json.load(response)
     if route == "health":
         assert payload.get("ok") is True
+        assert 8 in payload.get("protocols", []), "Deploy protocol-8 matchmaking before building this client"
     else:
         assert payload.get("schema") == 1 and any(car.get("enabled") for car in payload["cars"])
         print(f"Live catalog revision {payload['revision']}; enabled cars: {sum(bool(c.get('enabled')) for c in payload['cars'])}")
