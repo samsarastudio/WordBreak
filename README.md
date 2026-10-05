@@ -133,3 +133,14 @@ After recreation, matchmaking metadata should report `protocol: 6`, `version: "1
 The service allocates rooms and relays inputs/snapshots. One player runs race physics; host disconnect ends the room. Rooms are in memory, so run one replica and expect active sessions to end on redeployment. Empty seats use AI. This is not a dedicated authoritative simulation or a cross-device account service. No additional UDP port is needed.
 
 Validation: 28 Python tests passed on the server branch. Docker/ARM execution must be verified on the Pi after deployment.
+
+
+## Realtime online transport (1.5.0)
+
+Install `Backend/CarCatalog/requirements.txt` when running directly with Python. Docker installs the pinned aiohttp dependency automatically. Rebuild and recreate the existing container with its current `/data` volume and port 8787. WebSocket upgrade must be allowed for `/v1/matchmaking/stream` through the existing HTTPS reverse proxy. The admin and file APIs are served through a streaming loopback proxy to the unchanged catalog handler; its private port is not exposed.
+
+`/health` now reports `matchmaking: 7`, `protocols: [6,7]`, and `transport: "websocket"`. Existing 1.4 clients continue to use protocol 6; 1.5 clients use separate protocol-7 rooms, sequenced controls, input acknowledgements, and persistent 20 Hz state delivery. The service rejects stale inputs, bounds message sizes, and sends latest state instead of growing a backlog. A disconnected stream can fall back to authenticated HTTP polling within the same room.
+
+The game predicts its local car and replays unacknowledged controls after authoritative snapshots. Remote cars use a bounded interpolation buffer. Online simulation disables jump slow-motion for everyone. Race physics remain on the elected host: host failure still ends the race, and this is not a cheat-resistant dedicated simulation. TCP-based WebSockets can still stall under packet loss; this transport fits the current HTTPS-only Pi deployment, while UDP/QUIC would require additional public transport infrastructure. No claim of zero latency or universal device performance is made.
+
+Server validation: 31 Python tests, including five concurrent streams, stale-input rejection, protocol isolation, and admin/catalog access through the gateway. Test the deployed WSS path after recreation. No iOS export changes are included.

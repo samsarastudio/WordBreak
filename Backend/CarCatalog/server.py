@@ -340,8 +340,9 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--host',default='127.0.0.1');parser.add_argument('--port',type=int,default=8787)
     parser.add_argument('--data',default=str(HERE/'data'));parser.add_argument('--blender',default=os.environ.get('BLENDER_PATH','blender'))
     args=parser.parse_args();catalog=Catalog(args.data,args.blender)
-    server=ThreadingHTTPServer((args.host,args.port),Handler);server.catalog=catalog
+    from realtime import run
+    server=ThreadingHTTPServer(('127.0.0.1',0),Handler);server.catalog=catalog
     print(f'Car catalog: http://{args.host}:{args.port}/admin\nAdmin token file: {catalog.root / "admin-token.txt"}',flush=True)
-    try:server.serve_forever()
+    try:run(server,Handler.matches,args.host,args.port)
     finally:server.server_close();catalog.pool.shutdown(wait=True)
 if __name__=='__main__':main()
