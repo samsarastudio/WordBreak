@@ -6,5 +6,11 @@
     "bytes": 964,
     "revision": 1,
     "minAppVersion": "1.1.0"
+  },
+  "windows": {
+    "version": "1.1.0",
+    "url": "https://github.com/samsarastudio/WordBreak/releases/download/game-updates/WorldBreakRush-Windows-1.1.0-dd4a6fcee2cb.zip",
+    "sha256": "dd4a6fcee2cbde4e1138c626adc64fddb28a3cee76a9b3c3ebd63fdfcd34a732",
+    "bytes": 37942963
   }
 }
