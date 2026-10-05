@@ -3226,6 +3226,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_Light_set_renderingLayerMask_Injected();
 		Register_UnityEngine_Light_set_renderingLayerMask_Injected();
 
+		//System.Void UnityEngine.Light::set_shadowStrength_Injected(System.IntPtr,System.Single)
+		void Register_UnityEngine_Light_set_shadowStrength_Injected();
+		Register_UnityEngine_Light_set_shadowStrength_Injected();
+
 		//System.Void UnityEngine.Light::set_shadows_Injected(System.IntPtr,UnityEngine.LightShadows)
 		void Register_UnityEngine_Light_set_shadows_Injected();
 		Register_UnityEngine_Light_set_shadows_Injected();
@@ -3598,6 +3602,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_Mesh_ClearImpl_Injected();
 		Register_UnityEngine_Mesh_ClearImpl_Injected();
 
+		//System.Void UnityEngine.Mesh::CombineMeshesImpl_Injected(System.IntPtr,UnityEngine.Bindings.ManagedSpanWrapper&,System.Boolean,System.Boolean,System.Boolean)
+		void Register_UnityEngine_Mesh_CombineMeshesImpl_Injected();
+		Register_UnityEngine_Mesh_CombineMeshesImpl_Injected();
+
 		//System.Void UnityEngine.Mesh::GetArrayFromChannelImpl_Injected(System.IntPtr,UnityEngine.Rendering.VertexAttribute,UnityEngine.Rendering.VertexAttributeFormat,System.Int32,System.Array)
 		void Register_UnityEngine_Mesh_GetArrayFromChannelImpl_Injected();
 		Register_UnityEngine_Mesh_GetArrayFromChannelImpl_Injected();
@@ -3633,6 +3641,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.Mesh::UploadMeshDataImpl_Injected(System.IntPtr,System.Boolean)
 		void Register_UnityEngine_Mesh_UploadMeshDataImpl_Injected();
 		Register_UnityEngine_Mesh_UploadMeshDataImpl_Injected();
+
+		//System.Void UnityEngine.Mesh::get_bounds_Injected(System.IntPtr,UnityEngine.Bounds&)
+		void Register_UnityEngine_Mesh_get_bounds_Injected();
+		Register_UnityEngine_Mesh_get_bounds_Injected();
 
 		//System.Void UnityEngine.Mesh::set_bounds_Injected(System.IntPtr,UnityEngine.Bounds&)
 		void Register_UnityEngine_Mesh_set_bounds_Injected();
@@ -5714,6 +5726,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_RenderSettings_set_ambientLight_Injected();
 		Register_UnityEngine_RenderSettings_set_ambientLight_Injected();
 
+		//System.Void UnityEngine.RenderSettings::set_ambientMode(UnityEngine.Rendering.AmbientMode)
+		void Register_UnityEngine_RenderSettings_set_ambientMode();
+		Register_UnityEngine_RenderSettings_set_ambientMode();
+
 		//System.Void UnityEngine.RenderSettings::set_fog(System.Boolean)
 		void Register_UnityEngine_RenderSettings_set_fog();
 		Register_UnityEngine_RenderSettings_set_fog();
@@ -5733,6 +5749,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.RenderSettings::set_skybox_Injected(System.IntPtr)
 		void Register_UnityEngine_RenderSettings_set_skybox_Injected();
 		Register_UnityEngine_RenderSettings_set_skybox_Injected();
+
+		//System.Void UnityEngine.RenderSettings::set_sun_Injected(System.IntPtr)
+		void Register_UnityEngine_RenderSettings_set_sun_Injected();
+		Register_UnityEngine_RenderSettings_set_sun_Injected();
 
 	//End Registrations for type : UnityEngine.RenderSettings
 
@@ -7217,6 +7237,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.Time::get_timeAsRational_Injected(Unity.IntegerTime.RationalTime&)
 		void Register_UnityEngine_Time_get_timeAsRational_Injected();
 		Register_UnityEngine_Time_get_timeAsRational_Injected();
+
+		//System.Void UnityEngine.Time::set_timeScale(System.Single)
+		void Register_UnityEngine_Time_set_timeScale();
+		Register_UnityEngine_Time_set_timeScale();
 
 	//End Registrations for type : UnityEngine.Time
 
