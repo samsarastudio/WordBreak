@@ -8,9 +8,9 @@
     "minAppVersion": "1.1.0"
   },
   "windows": {
-    "version": "1.2.0",
-    "url": "https://github.com/samsarastudio/WordBreak/releases/download/game-updates/WorldBreakRush-Windows-1.2.0-536a23d24417.zip",
-    "sha256": "536a23d24417c6e118839b950f46a37f6ca5d0418b9d768dc34c71119fc7a3d7",
-    "bytes": 37968624
+    "version": "1.3.0",
+    "url": "https://github.com/samsarastudio/WordBreak/releases/download/game-updates/WorldBreakRush-Windows-1.3.0-ab17041b15d8.zip",
+    "sha256": "ab17041b15d8439330c0f0824e2ce1cb6ec40d2f80895e2601597f0ca3019f72",
+    "bytes": 42626475
   }
 }
