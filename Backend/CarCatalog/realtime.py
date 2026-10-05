@@ -13,9 +13,30 @@ def create_app(matches, catalog_port):
         await asyncio.gather(*(ws.close(code=1001) for ws in list(streams.values())),return_exceptions=True)
     app.cleanup_ctx.append(lifetime)
     async def metadata(request):
-        return web.json_response(dict(protocol=7,version='1.5.0',protocols=[6,7],queueSeconds=12,seats=6,transport='websocket',snapshotRate=20))
+        return web.json_response(dict(protocol=8,version='1.6.0',protocols=[6,7,8],queueSeconds=12,seats=6,transport='websocket',snapshotRate=20,authority='dedicated'))
     async def health(request):
-        return web.json_response(dict(ok=True,schema=1,matchmaking=7,protocols=[6,7],transport='websocket'))
+        return web.json_response(dict(ok=True,schema=1,matchmaking=8,protocols=[6,7,8],transport='websocket',dedicatedWorkers=len(matches.workers)))
+    async def worker_stream(request):
+        ws=web.WebSocketResponse(heartbeat=10,max_msg_size=32768,compress=False)
+        await ws.prepare(request);token=None
+        try:
+            hello=await asyncio.wait_for(ws.receive_json(),5)
+            if not isinstance(hello,dict) or hello.get('protocol')!=8 or hello.get('version')!='1.6.0':raise MatchError(409,'Worker version mismatch')
+            token=matches.worker_connect(hello.get('key'))
+            await ws.send_json(matches.worker_update(token,{}))
+            window=time.monotonic();count=0
+            while not ws.closed:
+                body=await asyncio.wait_for(ws.receive_json(),4)
+                now=time.monotonic()
+                if now-window>=1:window=now;count=0
+                count+=1
+                if count>90 or not isinstance(body,dict):raise MatchError(400,'Invalid worker update')
+                await asyncio.wait_for(ws.send_json(matches.worker_update(token,body)),2)
+        except (MatchError,ValueError,TypeError,asyncio.TimeoutError,ConnectionError):pass
+        finally:
+            if token:matches.worker_disconnect(token)
+            await ws.close()
+        return ws
     async def action(request):
         try:
             if request.content_length is None or request.content_length>32768:raise MatchError(413,'Request too large')
@@ -32,7 +53,7 @@ def create_app(matches, catalog_port):
             ticket=hello.get('ticket') if isinstance(hello,dict) else None
             if not isinstance(ticket,str):raise MatchError(401,'Race session required')
             reply=matches.request('poll',hello,request.remote)
-            if reply['protocol']!=7:raise MatchError(409,'Update the game')
+            if reply['protocol'] not in (7,8):raise MatchError(409,'Update the game')
             old=streams.get(ticket)
             if old:await old.close(code=1000)
             streams[ticket]=ws
@@ -81,6 +102,7 @@ def create_app(matches, catalog_port):
     app.router.add_get('/health',health)
     app.router.add_get('/v1/matchmaking',metadata)
     app.router.add_get('/v1/matchmaking/stream',stream)
+    app.router.add_get('/v1/matchmaking/worker',worker_stream)
     app.router.add_post('/v1/matchmaking/{action}',action)
     app.router.add_route('*','/{path:.*}',proxy)
     return app

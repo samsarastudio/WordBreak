@@ -116,7 +116,7 @@ The experimental tiny-fragment cleanup and automatic pivot-centering options hav
 Uploaded cars retain **Delete car permanently**, with a confirmation. Publish another default first if necessary. Deletion updates the catalog and removes known current, original-repair, and staged assets that are not shared with another car, built-in preview, or repair job. Previously downloaded client caches are not remotely erased. Built-in cars can be disabled rather than deleted. The authenticated `POST /admin/cars/delete` endpoint requires `id` and the current `revision`; deletion is blocked while an import or repair runs.
 
 
-## Matchmaking deployment
+## Legacy matchmaking deployment (1.4)
 
 The `main` branch includes the car admin, catalog, and protocol-6 HTTPS matchmaking in the same Docker service. Pull `main`, rebuild `wordbreak-cars` from `Backend/CarCatalog`, then recreate the container using your existing deployment configuration and persistent `/data` volume. No iOS export or Windows game binaries are included in this server change.
 
@@ -135,7 +135,7 @@ The service allocates rooms and relays inputs/snapshots. One player runs race ph
 Validation: 28 Python tests passed on the server branch. Docker/ARM execution must be verified on the Pi after deployment.
 
 
-## Realtime online transport (1.5.0)
+## Legacy realtime online transport (1.5.0)
 
 Install `Backend/CarCatalog/requirements.txt` when running directly with Python. Docker installs the pinned aiohttp dependency automatically. Rebuild and recreate the existing container with its current `/data` volume and port 8787. WebSocket upgrade must be allowed for `/v1/matchmaking/stream` through the existing HTTPS reverse proxy. The admin and file APIs are served through a streaming loopback proxy to the unchanged catalog handler; its private port is not exposed.
 
@@ -144,3 +144,7 @@ Install `Backend/CarCatalog/requirements.txt` when running directly with Python.
 The game predicts its local car and replays unacknowledged controls after authoritative snapshots. Remote cars use a bounded interpolation buffer. Online simulation disables jump slow-motion for everyone. Race physics remain on the elected host: host failure still ends the race, and this is not a cheat-resistant dedicated simulation. TCP-based WebSockets can still stall under packet loss; this transport fits the current HTTPS-only Pi deployment, while UDP/QUIC would require additional public transport infrastructure. No claim of zero latency or universal device performance is made.
 
 Server validation: 31 Python tests, including five concurrent streams, stale-input rejection, protocol isolation, and admin/catalog access through the gateway. Test the deployed WSS path after recreation. No iOS export changes are included.
+
+## Dedicated laptop race authority (1.6.0)
+
+Protocol 8 assigns rooms to authenticated Windows workers. Configure RACE_WORKER_KEY when recreating the Pi container. See [DEDICATED-SERVER.md](DEDICATED-SERVER.md) for deployment, laptop setup, capacity and compatibility. No worker means no new protocol-8 race; players cannot publish authority snapshots. Existing protocol-6/7 rooms remain supported separately. No Windows or iOS binaries are included in this repository.
