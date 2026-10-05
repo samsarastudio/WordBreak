@@ -2,6 +2,7 @@
 import argparse, concurrent.futures, hashlib, hmac, json, os, re, secrets, shutil
 import subprocess, sys, tempfile, threading, time, zipfile
 from wheel_repair import validate_regions
+from matchmaking import Matchmaker, MatchError
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit, parse_qs
@@ -262,6 +263,7 @@ class Catalog:
 
 class Handler(BaseHTTPRequestHandler):
     server_version='WorldBreakCatalog/1'
+    matches=Matchmaker()
     def log_message(self,fmt,*args):print(time.strftime('%H:%M:%S'),fmt%args,flush=True)
     @property
     def catalog(self):return self.server.catalog
@@ -274,7 +276,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path=urlsplit(self.path).path
         if path in ('/','/admin'):return self.send(200,(HERE/'admin.html').read_bytes(),'text/html; charset=utf-8')
-        if path=='/health':return self.send(200,dict(ok=True,schema=1))
+        if path=='/health':return self.send(200,dict(ok=True,schema=1,matchmaking=6))
+        if path=='/v1/matchmaking':return self.send(200,dict(protocol=6,version='1.4.0',queueSeconds=12,seats=6))
         if path=='/v1/catalog':return self.send(200,self.catalog.snapshot())
         if path=='/v1/previews':return self.send(200,self.catalog.previews())
         if re.fullmatch(r'/static/(?:[a-z0-9-]+\.(?:js|css)|vendor/(?:three\.(?:module|core)\.min\.js|THREE-LICENSE\.txt))',path):
@@ -296,6 +299,16 @@ class Handler(BaseHTTPRequestHandler):
                 return
         self.send(404,dict(error='Not found'))
     def do_POST(self):
+        if urlsplit(self.path).path.startswith('/v1/matchmaking/'):
+            try:
+                length=int(self.headers.get('Content-Length','0'))
+                if not 0<length<=32768:raise MatchError(413,'Match request too large')
+                self.connection.settimeout(8)
+                body=json.loads(self.rfile.read(length))
+                if not isinstance(body,dict):raise MatchError(400,'Expected an object')
+                return self.send(200,self.matches.request(urlsplit(self.path).path.rsplit('/',1)[-1],body,self.client_address[0]))
+            except MatchError as error:return self.send(error.status,dict(error=str(error)))
+            except (ValueError,TypeError):return self.send(400,dict(error='Invalid match request'))
         if not self.authorized():return self.send(401,dict(error='Admin token required'))
         temp=None
         try:

@@ -2542,10 +2542,6 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUIClip_SetMatrix_Injected();
 		Register_UnityEngine_GUIClip_SetMatrix_Injected();
 
-		//System.Void UnityEngine.GUIClip::UnclipToWindow_Vector2_Injected(UnityEngine.Vector2&,UnityEngine.Vector2&)
-		void Register_UnityEngine_GUIClip_UnclipToWindow_Vector2_Injected();
-		Register_UnityEngine_GUIClip_UnclipToWindow_Vector2_Injected();
-
 		//System.Void UnityEngine.GUIClip::Unclip_Vector2_Injected(UnityEngine.Vector2&,UnityEngine.Vector2&)
 		void Register_UnityEngine_GUIClip_Unclip_Vector2_Injected();
 		Register_UnityEngine_GUIClip_Unclip_Vector2_Injected();
@@ -2567,14 +2563,6 @@ void RegisterAllStrippedInternalCalls()
 		Register_UnityEngine_GUILayoutUtility_Internal_MoveWindow_Injected();
 
 	//End Registrations for type : UnityEngine.GUILayoutUtility
-
-	//Start Registrations for type : UnityEngine.GUISettings
-
-		//System.Single UnityEngine.GUISettings::Internal_GetCursorFlashSpeed()
-		void Register_UnityEngine_GUISettings_Internal_GetCursorFlashSpeed();
-		Register_UnityEngine_GUISettings_Internal_GetCursorFlashSpeed();
-
-	//End Registrations for type : UnityEngine.GUISettings
 
 	//Start Registrations for type : UnityEngine.GUIStyle
 
@@ -2626,10 +2614,6 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUIStyle_get_font_Injected();
 		Register_UnityEngine_GUIStyle_get_font_Injected();
 
-		//System.Single UnityEngine.GUIStyle::Internal_GetCursorFlashOffset()
-		void Register_UnityEngine_GUIStyle_Internal_GetCursorFlashOffset();
-		Register_UnityEngine_GUIStyle_Internal_GetCursorFlashOffset();
-
 		//System.Single UnityEngine.GUIStyle::get_fixedHeight_Injected(System.IntPtr)
 		void Register_UnityEngine_GUIStyle_get_fixedHeight_Injected();
 		Register_UnityEngine_GUIStyle_get_fixedHeight_Injected();
@@ -2658,14 +2642,6 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUIStyle_Internal_Draw2_Injected();
 		Register_UnityEngine_GUIStyle_Internal_Draw2_Injected();
 
-		//System.Void UnityEngine.GUIStyle::Internal_DrawCursor_Injected(System.IntPtr,UnityEngine.Rect&,UnityEngine.GUIContent,UnityEngine.Vector2&,UnityEngine.Color&)
-		void Register_UnityEngine_GUIStyle_Internal_DrawCursor_Injected();
-		Register_UnityEngine_GUIStyle_Internal_DrawCursor_Injected();
-
-		//System.Void UnityEngine.GUIStyle::Internal_DrawWithTextSelection_Injected(System.IntPtr,UnityEngine.Rect&,UnityEngine.GUIContent,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,UnityEngine.Vector2&,UnityEngine.Vector2&,UnityEngine.Color&,UnityEngine.Color&)
-		void Register_UnityEngine_GUIStyle_Internal_DrawWithTextSelection_Injected();
-		Register_UnityEngine_GUIStyle_Internal_DrawWithTextSelection_Injected();
-
 		//System.Void UnityEngine.GUIStyle::Internal_Draw_Injected(System.IntPtr,UnityEngine.Rect&,UnityEngine.GUIContent,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
 		void Register_UnityEngine_GUIStyle_Internal_Draw_Injected();
 		Register_UnityEngine_GUIStyle_Internal_Draw_Injected();
@@ -2686,25 +2662,13 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUIStyle_get_Internal_clipOffset_Injected();
 		Register_UnityEngine_GUIStyle_get_Internal_clipOffset_Injected();
 
-		//System.Void UnityEngine.GUIStyle::get_contentOffset_Injected(System.IntPtr,UnityEngine.Vector2&)
-		void Register_UnityEngine_GUIStyle_get_contentOffset_Injected();
-		Register_UnityEngine_GUIStyle_get_contentOffset_Injected();
-
 		//System.Void UnityEngine.GUIStyle::get_rawName_Injected(System.IntPtr,UnityEngine.Bindings.ManagedSpanWrapper&)
 		void Register_UnityEngine_GUIStyle_get_rawName_Injected();
 		Register_UnityEngine_GUIStyle_get_rawName_Injected();
 
-		//System.Void UnityEngine.GUIStyle::set_Internal_clipOffset_Injected(System.IntPtr,UnityEngine.Vector2&)
-		void Register_UnityEngine_GUIStyle_set_Internal_clipOffset_Injected();
-		Register_UnityEngine_GUIStyle_set_Internal_clipOffset_Injected();
-
 		//System.Void UnityEngine.GUIStyle::set_alignment_Injected(System.IntPtr,UnityEngine.TextAnchor)
 		void Register_UnityEngine_GUIStyle_set_alignment_Injected();
 		Register_UnityEngine_GUIStyle_set_alignment_Injected();
-
-		//System.Void UnityEngine.GUIStyle::set_contentOffset_Injected(System.IntPtr,UnityEngine.Vector2&)
-		void Register_UnityEngine_GUIStyle_set_contentOffset_Injected();
-		Register_UnityEngine_GUIStyle_set_contentOffset_Injected();
 
 		//System.Void UnityEngine.GUIStyle::set_fontSize_Injected(System.IntPtr,System.Int32)
 		void Register_UnityEngine_GUIStyle_set_fontSize_Injected();
@@ -2865,10 +2829,6 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.GUIUtility::set_systemCopyBuffer_Injected(UnityEngine.Bindings.ManagedSpanWrapper&)
 		void Register_UnityEngine_GUIUtility_set_systemCopyBuffer_Injected();
 		Register_UnityEngine_GUIUtility_set_systemCopyBuffer_Injected();
-
-		//System.Void UnityEngine.GUIUtility::set_textFieldInput(System.Boolean)
-		void Register_UnityEngine_GUIUtility_set_textFieldInput();
-		Register_UnityEngine_GUIUtility_set_textFieldInput();
 
 	//End Registrations for type : UnityEngine.GUIUtility
 
@@ -3922,6 +3882,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_Networking_UnityWebRequest_GetError_Injected();
 		Register_UnityEngine_Networking_UnityWebRequest_GetError_Injected();
 
+		//UnityEngine.Networking.UnityWebRequest/UnityWebRequestError UnityEngine.Networking.UnityWebRequest::InternalSetRequestHeader_Injected(System.IntPtr,UnityEngine.Bindings.ManagedSpanWrapper&,UnityEngine.Bindings.ManagedSpanWrapper&)
+		void Register_UnityEngine_Networking_UnityWebRequest_InternalSetRequestHeader_Injected();
+		Register_UnityEngine_Networking_UnityWebRequest_InternalSetRequestHeader_Injected();
+
 		//UnityEngine.Networking.UnityWebRequest/UnityWebRequestError UnityEngine.Networking.UnityWebRequest::SetCertificateHandler_Injected(System.IntPtr,System.IntPtr)
 		void Register_UnityEngine_Networking_UnityWebRequest_SetCertificateHandler_Injected();
 		Register_UnityEngine_Networking_UnityWebRequest_SetCertificateHandler_Injected();
@@ -3963,6 +3927,14 @@ void RegisterAllStrippedInternalCalls()
 		Register_UnityEngine_Networking_UploadHandler_ReleaseFromScripting_Injected();
 
 	//End Registrations for type : UnityEngine.Networking.UploadHandler
+
+	//Start Registrations for type : UnityEngine.Networking.UploadHandlerRaw
+
+		//System.IntPtr UnityEngine.Networking.UploadHandlerRaw::Create(UnityEngine.Networking.UploadHandlerRaw,System.Byte*,System.Int32)
+		void Register_UnityEngine_Networking_UploadHandlerRaw_Create();
+		Register_UnityEngine_Networking_UploadHandlerRaw_Create();
+
+	//End Registrations for type : UnityEngine.Networking.UploadHandlerRaw
 
 	//Start Registrations for type : UnityEngine.Object
 
