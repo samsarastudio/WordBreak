@@ -3210,9 +3210,29 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_Light_get_color_Injected();
 		Register_UnityEngine_Light_get_color_Injected();
 
+		//System.Void UnityEngine.Light::set_color_Injected(System.IntPtr,UnityEngine.Color&)
+		void Register_UnityEngine_Light_set_color_Injected();
+		Register_UnityEngine_Light_set_color_Injected();
+
+		//System.Void UnityEngine.Light::set_intensity_Injected(System.IntPtr,System.Single)
+		void Register_UnityEngine_Light_set_intensity_Injected();
+		Register_UnityEngine_Light_set_intensity_Injected();
+
+		//System.Void UnityEngine.Light::set_range_Injected(System.IntPtr,System.Single)
+		void Register_UnityEngine_Light_set_range_Injected();
+		Register_UnityEngine_Light_set_range_Injected();
+
 		//System.Void UnityEngine.Light::set_renderingLayerMask_Injected(System.IntPtr,System.Int32)
 		void Register_UnityEngine_Light_set_renderingLayerMask_Injected();
 		Register_UnityEngine_Light_set_renderingLayerMask_Injected();
+
+		//System.Void UnityEngine.Light::set_shadows_Injected(System.IntPtr,UnityEngine.LightShadows)
+		void Register_UnityEngine_Light_set_shadows_Injected();
+		Register_UnityEngine_Light_set_shadows_Injected();
+
+		//System.Void UnityEngine.Light::set_type_Injected(System.IntPtr,UnityEngine.LightType)
+		void Register_UnityEngine_Light_set_type_Injected();
+		Register_UnityEngine_Light_set_type_Injected();
 
 		//UnityEngine.LightShadows UnityEngine.Light::get_shadows_Injected(System.IntPtr)
 		void Register_UnityEngine_Light_get_shadows_Injected();
