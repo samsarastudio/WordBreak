@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "content": {
+    "url": "https://github.com/samsarastudio/WordBreak/releases/download/game-updates/WorldBreakRush-DLC-r1-76ef1c91b51e.json",
+    "sha256": "76ef1c91b51eabaedc4f3326fed667dc0a953ebc79d3d09dc32b806a07e744b1",
+    "bytes": 964,
+    "revision": 1,
+    "minAppVersion": "1.1.0"
+  }
+}
