@@ -11,3 +11,5 @@ Windows executable updates and data-only DLC use the release feed. New iOS execu
 Outstanding production work includes physical iPhone touch/safe-area QA, GPU/thermal profiling, broader network-condition testing, hosted matchmaking, secure server-backed profiles/economy, distinct car handling and broader progression/customization. The IMGUI HUD should be replaced with retained UI for production mobile performance. No 60-FPS-on-device claim is made.
 
 See PERFORMANCE_REPORT.md for actual verification results and ENVIRONMENT-CAMPAIGN-PLAN.md for the campaign design.
+
+Version 1.3.0 adds gated car/track purchases using Race Points, Campaign/Time Attack/Stunt Run selection and local-network host/join access. Level 1 and Cinder are free; other content requires the displayed campaign milestone and RP. The new hazards are authored cargo drops, steam vents, rockfall and swinging loads. LAN participants must all update to protocol 5. Ownership and currency are local-profile data, not tamper-resistant server entitlements. Research, rules and the AI button prompt are recorded in CHALLENGES-PROGRESSION.md.

@@ -1910,6 +1910,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_Event_get_modifiers_Injected();
 		Register_UnityEngine_Event_get_modifiers_Injected();
 
+		//UnityEngine.EventType UnityEngine.Event::GetTypeForControl_Injected(System.IntPtr,System.Int32)
+		void Register_UnityEngine_Event_GetTypeForControl_Injected();
+		Register_UnityEngine_Event_GetTypeForControl_Injected();
+
 		//UnityEngine.EventType UnityEngine.Event::get_rawType_Injected(System.IntPtr)
 		void Register_UnityEngine_Event_get_rawType_Injected();
 		Register_UnityEngine_Event_get_rawType_Injected();
@@ -2442,6 +2446,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUI_get_enabled();
 		Register_UnityEngine_GUI_get_enabled();
 
+		//System.Boolean UnityEngine.GUI::get_usePageScrollbars()
+		void Register_UnityEngine_GUI_get_usePageScrollbars();
+		Register_UnityEngine_GUI_get_usePageScrollbars();
+
 		//System.IntPtr UnityEngine.GUI::get_blendMaterial_Injected()
 		void Register_UnityEngine_GUI_get_blendMaterial_Injected();
 		Register_UnityEngine_GUI_get_blendMaterial_Injected();
@@ -2461,6 +2469,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.GUI::GrabMouseControl(System.Int32)
 		void Register_UnityEngine_GUI_GrabMouseControl();
 		Register_UnityEngine_GUI_GrabMouseControl();
+
+		//System.Void UnityEngine.GUI::InternalRepaintEditorWindow()
+		void Register_UnityEngine_GUI_InternalRepaintEditorWindow();
+		Register_UnityEngine_GUI_InternalRepaintEditorWindow();
 
 		//System.Void UnityEngine.GUI::ReleaseMouseControl()
 		void Register_UnityEngine_GUI_ReleaseMouseControl();
@@ -2521,6 +2533,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.GUIClip::Internal_PushParentClip_Injected(UnityEngine.Matrix4x4&,UnityEngine.Matrix4x4&,UnityEngine.Rect&)
 		void Register_UnityEngine_GUIClip_Internal_PushParentClip_Injected();
 		Register_UnityEngine_GUIClip_Internal_PushParentClip_Injected();
+
+		//System.Void UnityEngine.GUIClip::Internal_Push_Injected(UnityEngine.Rect&,UnityEngine.Vector2&,UnityEngine.Vector2&,System.Boolean)
+		void Register_UnityEngine_GUIClip_Internal_Push_Injected();
+		Register_UnityEngine_GUIClip_Internal_Push_Injected();
 
 		//System.Void UnityEngine.GUIClip::SetMatrix_Injected(UnityEngine.Matrix4x4&)
 		void Register_UnityEngine_GUIClip_SetMatrix_Injected();
@@ -2622,6 +2638,10 @@ void RegisterAllStrippedInternalCalls()
 		void Register_UnityEngine_GUIStyle_get_fixedWidth_Injected();
 		Register_UnityEngine_GUIStyle_get_fixedWidth_Injected();
 
+		//System.Void UnityEngine.GUIStyle::AssignRectOffset_Injected(System.IntPtr,System.Int32,System.IntPtr)
+		void Register_UnityEngine_GUIStyle_AssignRectOffset_Injected();
+		Register_UnityEngine_GUIStyle_AssignRectOffset_Injected();
+
 		//System.Void UnityEngine.GUIStyle::Internal_Destroy(System.IntPtr)
 		void Register_UnityEngine_GUIStyle_Internal_Destroy();
 		Register_UnityEngine_GUIStyle_Internal_Destroy();
@@ -2721,6 +2741,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.IntPtr UnityEngine.GUIStyleState::Init()
 		void Register_UnityEngine_GUIStyleState_Init();
 		Register_UnityEngine_GUIStyleState_Init();
+
+		//System.IntPtr UnityEngine.GUIStyleState::get_background_Injected(System.IntPtr)
+		void Register_UnityEngine_GUIStyleState_get_background_Injected();
+		Register_UnityEngine_GUIStyleState_get_background_Injected();
 
 		//System.Void UnityEngine.GUIStyleState::Cleanup_Injected(System.IntPtr)
 		void Register_UnityEngine_GUIStyleState_Cleanup_Injected();
@@ -4453,6 +4477,22 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.RectOffset::Remove_Injected(System.IntPtr,UnityEngine.Rect&,UnityEngine.Rect&)
 		void Register_UnityEngine_RectOffset_Remove_Injected();
 		Register_UnityEngine_RectOffset_Remove_Injected();
+
+		//System.Void UnityEngine.RectOffset::set_bottom_Injected(System.IntPtr,System.Int32)
+		void Register_UnityEngine_RectOffset_set_bottom_Injected();
+		Register_UnityEngine_RectOffset_set_bottom_Injected();
+
+		//System.Void UnityEngine.RectOffset::set_left_Injected(System.IntPtr,System.Int32)
+		void Register_UnityEngine_RectOffset_set_left_Injected();
+		Register_UnityEngine_RectOffset_set_left_Injected();
+
+		//System.Void UnityEngine.RectOffset::set_right_Injected(System.IntPtr,System.Int32)
+		void Register_UnityEngine_RectOffset_set_right_Injected();
+		Register_UnityEngine_RectOffset_set_right_Injected();
+
+		//System.Void UnityEngine.RectOffset::set_top_Injected(System.IntPtr,System.Int32)
+		void Register_UnityEngine_RectOffset_set_top_Injected();
+		Register_UnityEngine_RectOffset_set_top_Injected();
 
 	//End Registrations for type : UnityEngine.RectOffset
 
