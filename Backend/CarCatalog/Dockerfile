@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends blender python3
 # Verify the FBX dependency inside Blender itself; fail the build if missing.
 RUN blender --background --factory-startup --disable-autoexec --python-exit-code 1 --python-expr "import numpy; print('BLENDER_NUMPY_OK', numpy.__version__)"
 WORKDIR /app
-COPY server.py convert.py render_preview.py wheel_repair.py admin.html ./
+COPY server.py matchmaking.py convert.py render_preview.py wheel_repair.py admin.html ./
 COPY static ./static
 RUN mkdir /data && chown catalog:catalog /data
 USER catalog

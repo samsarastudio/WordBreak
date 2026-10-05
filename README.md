@@ -43,7 +43,7 @@ docker run -d --restart unless-stopped --name wordbreak-cars \
 
 For internet use, put the service behind an HTTPS reverse proxy and restrict admin access. Allow uploads up to 100 MB. Conversion and image rendering are background jobs, polled by the admin. Keep Blender updated. The Docker image runs as a non-root user; its build has not been verified on this Windows development machine.
 
-Game clients need the existing runtime catalog support installed. This repository does not implement the race/multiplayer server or cross-device player accounts. Compatible clients fetch the catalog and immutable WBCAR001 mesh packages; the game supplies driving physics, input, collision, and wheel animation. Existing older game builds without that loader need a one-time client update.
+Game clients need the existing runtime catalog support installed. This repository includes HTTPS matchmaking and race-state relay, but does not implement dedicated-server physics or cross-device player accounts. Compatible clients fetch the catalog and immutable WBCAR001 mesh packages; the game supplies driving physics, input, collision, and wheel animation. Existing older game builds without that loader need a one-time client update.
 
 ## API
 
@@ -114,3 +114,22 @@ New uploads require separate mesh objects named exactly `WheelFL`, `WheelFR`, `W
 The experimental tiny-fragment cleanup and automatic pivot-centering options have been removed. Prepare the source model instead. A tire with an oval mesh still needs modeling work; pivot changes alone cannot make it round.
 
 Uploaded cars retain **Delete car permanently**, with a confirmation. Publish another default first if necessary. Deletion updates the catalog and removes known current, original-repair, and staged assets that are not shared with another car, built-in preview, or repair job. Previously downloaded client caches are not remotely erased. Built-in cars can be disabled rather than deleted. The authenticated `POST /admin/cars/delete` endpoint requires `id` and the current `revision`; deletion is blocked while an import or repair runs.
+
+
+## Matchmaking deployment
+
+The `main` branch includes the car admin, catalog, and protocol-6 HTTPS matchmaking in the same Docker service. Pull `main`, rebuild `wordbreak-cars` from `Backend/CarCatalog`, then recreate the container using your existing deployment configuration and persistent `/data` volume. No iOS export or Windows game binaries are included in this server change.
+
+```sh
+git pull --ff-only origin main
+sudo docker build -t wordbreak-cars Backend/CarCatalog
+# Recreate the service with your existing deployment configuration.
+curl -fsS https://game.inmomentservices.com/v1/matchmaking
+curl -fsS https://game.inmomentservices.com/health
+```
+
+After recreation, matchmaking metadata should report `protocol: 6`, `version: "1.4.0"`, `queueSeconds: 12`, and `seats: 6`; health should include `matchmaking: 6`. The version is the matchmaking compatibility version, also used by the 1.4.1 UI-only client patch.
+
+The service allocates rooms and relays inputs/snapshots. One player runs race physics; host disconnect ends the room. Rooms are in memory, so run one replica and expect active sessions to end on redeployment. Empty seats use AI. This is not a dedicated authoritative simulation or a cross-device account service. No additional UDP port is needed.
+
+Validation: 28 Python tests passed on the server branch. Docker/ARM execution must be verified on the Pi after deployment.
